@@ -18,6 +18,7 @@
 #include <iterator>
 
 #include "../myClasses/Tools.h"
+#include "../myClasses/STV_Tools.h"
 
 using namespace std;
 using namespace Constants;
@@ -100,13 +101,17 @@ void GenieAnalysis::Loop() {
 	TH2D* CC1pRecoTrueDeltaPhiTPlot2D = new TH2D("CC1pRecoTrueDeltaPhiTPlot2D",
 		LabelXAxisDeltaPhiT2D,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);
 
-	TH2D* CC1pRecoTrueMuonMomentumPlot2D = new TH2D("CC1pRecoTrueMuonMomentumPlot2D",LabelXAxisMuonMomentum2D,NBinsMuonMomentum,ArrayNBinsMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
-	TH2D* CC1pRecoTrueMuonPhiPlot2D = new TH2D("CC1pRecoTrueMuonPhiPlot2D",LabelXAxisMuonPhi2D,NBinsMuonPhi,ArrayNBinsMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
-	TH2D* CC1pRecoTrueMuonCosThetaPlot2D = new TH2D("CC1pRecoTrueMuonCosThetaPlot2D",LabelXAxisMuonCosTheta2D,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
+	TH2D* CC1pRecoTrueMuonMomentumPlot2D = new TH2D("CC1pRecoTrueMuonMomentumPlot2D",LabelXAxisMuonMomentum2D,NBinsMuonMomentum,
+		ArrayNBinsMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
+	TH2D* CC1pRecoTrueMuonPhiPlot2D = new TH2D("CC1pRecoTrueMuonPhiPlot2D",LabelXAxisMuonPhi2D,NBinsMuonPhi,
+		ArrayNBinsMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
+	TH2D* CC1pRecoTrueMuonCosThetaPlot2D = new TH2D("CC1pRecoTrueMuonCosThetaPlot2D",LabelXAxisMuonCosTheta2D,NBinsMuonCosTheta,
+		ArrayNBinsMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
 
 	TH2D* CC1pRecoTrueProtonMomentumPlot2D = new TH2D("CC1pRecoTrueProtonMomentumPlot2D",
 		LabelXAxisProtonMomentum2D,NBinsProtonMomentum,ArrayNBinsProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);
-	TH2D* CC1pRecoTrueProtonPhiPlot2D = new TH2D("CC1pRecoTrueProtonPhiPlot2D",LabelXAxisProtonPhi2D,NBinsProtonPhi,ArrayNBinsProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
+	TH2D* CC1pRecoTrueProtonPhiPlot2D = new TH2D("CC1pRecoTrueProtonPhiPlot2D",LabelXAxisProtonPhi2D,NBinsProtonPhi,
+		ArrayNBinsProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
 	TH2D* CC1pRecoTrueProtonCosThetaPlot2D = new TH2D("CC1pRecoTrueProtonCosThetaPlot2D",
 		LabelXAxisProtonCosTheta2D,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
 
@@ -114,7 +119,7 @@ void GenieAnalysis::Loop() {
 	TH2D* CC1pRecoTrueEQEPlot2D = new TH2D("CC1pRecoTrueEQEPlot2D",LabelXAxisEQE2D,NBinsEQE,ArrayNBinsEQE,NBinsEQE,ArrayNBinsEQE);
 	TH2D* CC1pRecoTrueQ2Plot2D = new TH2D("CC1pRecoTrueQ2Plot2D",LabelXAxisQ22D,NBinsQ2,ArrayNBinsQ2,NBinsQ2,ArrayNBinsQ2);
 
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Bkg 1D Reco True Transverse Variables
 
@@ -126,9 +131,11 @@ void GenieAnalysis::Loop() {
 	TH1D* BkgRecoTrueMuonPhiPlot = new TH1D("NonCC1pRecoMuonPhiPlot",LabelXAxisMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
 	TH1D* BkgRecoTrueMuonCosThetaPlot = new TH1D("NonCC1pRecoMuonCosThetaPlot",LabelXAxisMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
 
-	TH1D* BkgRecoTrueProtonMomentumPlot = new TH1D("NonCC1pRecoProtonMomentumPlot",LabelXAxisProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);
+	TH1D* BkgRecoTrueProtonMomentumPlot = new TH1D("NonCC1pRecoProtonMomentumPlot",LabelXAxisProtonMomentum,
+		NBinsProtonMomentum,ArrayNBinsProtonMomentum);
 	TH1D* BkgRecoTrueProtonPhiPlot = new TH1D("NonCC1pRecoProtonPhiPlot",LabelXAxisProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
-	TH1D* BkgRecoTrueProtonCosThetaPlot = new TH1D("NonCC1pRecoProtonCosThetaPlot",LabelXAxisProtonCosTheta,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
+	TH1D* BkgRecoTrueProtonCosThetaPlot = new TH1D("NonCC1pRecoProtonCosThetaPlot",LabelXAxisProtonCosTheta,
+		NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
 
 	TH1D* BkgRecoTrueECalPlot = new TH1D("NonCC1pRecoECalPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
 	TH1D* BkgRecoTrueEQEPlot = new TH1D("NonCC1pRecoEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
@@ -143,20 +150,22 @@ void GenieAnalysis::Loop() {
 	TH2D* BkgRecoTrueDeltaPhiTPlot2D = new TH2D("NonCC1pRecoDeltaPhiTPlot2D",
 		LabelXAxisDeltaPhiT2D,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);
 
-	TH2D* BkgRecoMuonMomentumPlot2D = new TH2D("BkgRecoMuonMomentumPlot2D",LabelXAxisMuonMomentum2D,NBinsMuonMomentum,ArrayNBinsMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
+	TH2D* BkgRecoMuonMomentumPlot2D = new TH2D("BkgRecoMuonMomentumPlot2D",LabelXAxisMuonMomentum2D,NBinsMuonMomentum,
+		ArrayNBinsMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
 	TH2D* BkgRecoMuonPhiPlot2D = new TH2D("BkgRecoMuonPhiPlot2D",LabelXAxisMuonPhi2D,NBinsMuonPhi,ArrayNBinsMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
-	TH2D* BkgRecoMuonCosThetaPlot2D = new TH2D("BkgRecoMuonCosThetaPlot2D",LabelXAxisMuonCosTheta2D,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
+	TH2D* BkgRecoMuonCosThetaPlot2D = new TH2D("BkgRecoMuonCosThetaPlot2D",LabelXAxisMuonCosTheta2D,NBinsMuonCosTheta,
+		ArrayNBinsMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
 
 	TH2D* BkgRecoProtonMomentumPlot2D = new TH2D("BkgRecoProtonMomentumPlot2D",
 		LabelXAxisProtonMomentum2D,NBinsProtonMomentum,ArrayNBinsProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);
-	TH2D* BkgRecoProtonPhiPlot2D = new TH2D("BkgRecoProtonPhiPlot2D",LabelXAxisProtonPhi2D,NBinsProtonPhi,ArrayNBinsProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
+	TH2D* BkgRecoProtonPhiPlot2D = new TH2D("BkgRecoProtonPhiPlot2D",LabelXAxisProtonPhi2D,
+		NBinsProtonPhi,ArrayNBinsProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
 	TH2D* BkgRecoProtonCosThetaPlot2D = new TH2D("BkgRecoProtonCosThetaPlot2D",
 		LabelXAxisProtonCosTheta2D,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
 
 	TH2D* BkgRecoTrueECalPlot2D = new TH2D("NonCC1pRecoECalPlot2D",LabelXAxisECal2D,NBinsECal,ArrayNBinsECal,NBinsECal,ArrayNBinsECal);
 	TH2D* BkgRecoTrueEQEPlot2D = new TH2D("NonCC1pRecoEQEPlot2D",LabelXAxisEQE2D,NBinsEQE,ArrayNBinsEQE,NBinsEQE,ArrayNBinsEQE);
 	TH2D* BkgRecoTrueQ2Plot2D = new TH2D("NonCC1pRecoQ2Plot2D",LabelXAxisQ22D,NBinsQ2,ArrayNBinsQ2,NBinsQ2,ArrayNBinsQ2);
-
 
 	// -----------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -196,15 +205,7 @@ void GenieAnalysis::Loop() {
 	int CounterSTVQEEventsPassedSelection = 0;
 	int CounterSTVMECEventsPassedSelection = 0;
 	int CounterSTVRESEventsPassedSelection = 0;
-	int CounterSTVDISEventsPassedSelection = 0;
-
-	// Counters CCQElike analysis
-
-	int CounterCCQElikeEventsPassedSelection = 0;
-	int CounterCCQElikeQEEventsPassedSelection = 0;
-	int CounterCCQElikeMECEventsPassedSelection = 0;
-	int CounterCCQElikeRESEventsPassedSelection = 0;
-	int CounterCCQElikeDISEventsPassedSelection = 0;
+	int CounterSTVDISEventsPassedSelection = 0;	
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -224,7 +225,6 @@ void GenieAnalysis::Loop() {
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
 	for (Long64_t jentry=0; jentry<nentries;jentry++) {
-//	for (Long64_t jentry=0; jentry<5000;jentry++) {
 
 		Long64_t ientry = LoadTree(jentry); if (ientry < 0) break;
 		nb = fChain->GetEntry(jentry);   nbytes += nb;
@@ -234,8 +234,10 @@ void GenieAnalysis::Loop() {
 
 		tweights->GetEntry(jentry);
 		double weight = cv_weight;
+//		double weight = 1.;		
+		if (weight <= 0 || weight >=10) { continue; }
 
-		SumCVWeights += weight;
+		SumCVWeights += weight;		
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -249,14 +251,17 @@ void GenieAnalysis::Loop() {
 		if (mec==1) { genie_mode = 1; }
 		if (res==1) { genie_mode = 2; }
 		if (dis==1) { genie_mode = 3; }
+		if (coh==1) { genie_mode = 4; }		
+		
 		CVWeightsVsInteractionModePlot->Fill(genie_mode,cv_weight);
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
 		if (!cc) { continue; }
+		
+		// ---------------------------------------------------------------------------------------------------------------------------------	
 
 		int ProtonTagging = 0, ChargedPionTagging = 0;
-		int PiPlusFinalStateIndex = 99, PiMinusFinalStateIndex = 99;
 		vector <int> ProtonID; ProtonID.clear();
 
 		for (int i = 0; i < nf; i++) {
@@ -280,14 +285,6 @@ void GenieAnalysis::Loop() {
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
-		double RandomX = gRandom->Uniform(XMin,XMax);
-		double RandomY = gRandom->Uniform(YMin,YMax);
-		double RandomZ = gRandom->Uniform(ZMin,ZMax);
-
-		TVector3 VertexLocation(RandomX,RandomY,RandomZ);//cm
-
-		// -----------------------------------------------------------------------------------------------------------------------------------
-
 		// Muon
 
 		TVector3 Muon3Vector(pxl,pyl,pzl); // GeV
@@ -296,16 +293,6 @@ void GenieAnalysis::Loop() {
 		double MuonTheta = TMath::ACos(cthl) * 180. / TMath::Pi(); // deg
 		double MuonCosTheta = cthl;
 		double MuonPhi = Muon4Vector.Phi() * 180. / TMath::Pi(); // deg
-
-		TVector3 MuonTrans3Vector(Muon4Vector.X(),Muon4Vector.Y(),0.);
-		double MuonTrans3VectorMag = MuonTrans3Vector.Mag();
-
-		TVector3 muonTrajectory_dir = Muon4Vector.Vect().Unit();
-		double Pmu_MeVc = 1000*MuonMomentum; // MeV / c 
-		double dmu_cm = Get_muonRangeFromMomentum( Pmu_MeVc );
-		TVector3 muonTrajectory_end = VertexLocation + muonTrajectory_dir * dmu_cm; // cm
-		bool MuonContainedEndPoint = InFV(muonTrajectory_end);
-		double MuonLength = (muonTrajectory_end - VertexLocation).Mag();
 
 		// ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -318,17 +305,7 @@ void GenieAnalysis::Loop() {
 		double ProtonTheta = TMath::ACos(cthf[ProtonIndex]) * 180. / TMath::Pi(); // deg
 		double ProtonCosTheta = cthf[ProtonIndex];
 		double ProtonPhi = Proton4Vector.Phi() * 180. / TMath::Pi(); // deg
-		double ProtonKE = Proton4Vector.E() - ProtonMass_GeV; // GeV
-
-		TVector3 ProtonTrans3Vector(Proton4Vector.X(),Proton4Vector.Y(),0.);
-		double ProtonTrans3VectorMag = ProtonTrans3Vector.Mag();
-
-		TVector3 protonTrajectory_dir = Proton4Vector.Vect().Unit();
-		double Pp_MeVc = 1000*ProtonMomentum; // MeV / c 
-		double dp_cm = Get_protonRangeFromMomentum( Pp_MeVc );
-		TVector3 protonTrajectory_end = VertexLocation + protonTrajectory_dir * dp_cm; // cm
-		bool ProtonContainedEndPoint = InFV(protonTrajectory_end);
-		double ProtonLength = (protonTrajectory_end - VertexLocation).Mag();
+		double ProtonE = Proton4Vector.E(); // GeV
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
@@ -344,73 +321,41 @@ void GenieAnalysis::Loop() {
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
-		// Reconstructed Calorimetric Energy
+		STV_Tools stv_tool(Muon3Vector,Proton3Vector,El,ProtonE);
 
-		double ECal = El + ProtonKE + BE; // GeV
-
-		// Reconstructed QE Energy
-
-		double EQE = ( ProtonMass_GeV * BE + ProtonMass_GeV * El ) / ( ProtonMass_GeV - El + pl * cthl);
-
-		// Reconstructed Neutrino
-
-		TLorentzVector Neutrino4Vector(0.,0.,ECal,ECal); // GeV
-//		TLorentzVector Neutrino4Vector(pxv,pyv,pzv,Ev); // GeV
-
-		// Momentum transfer Q2
-
-		TLorentzVector q4Vector = Neutrino4Vector - Muon4Vector;
-		double TrueQ2 = -q4Vector.Mag2();
-
-		// --------------------------------------------------------------------------------------------------------------------------------
-
-		// Single Transverse Variables
-
-		// Missing Momentum PT
-
-		TLorentzVector RecoNeutrino4Vector = Proton4Vector + Muon4Vector;  // GeV
-
-		TVector3 Pmiss3Vector(RecoNeutrino4Vector.X(),RecoNeutrino4Vector.Y(),0.);
-		double PTmissMomentum = Pmiss3Vector.Mag(); // GeV / c
-
-		double TrueDeltaAlphaT = TMath::ACos( (- MuonTrans3Vector * Pmiss3Vector) / ( MuonTrans3VectorMag * PTmissMomentum ) ) * 180./TMath::Pi();
-		double TrueDeltaPhiT = TMath::ACos( (- MuonTrans3Vector * ProtonTrans3Vector) / ( MuonTrans3VectorMag * ProtonTrans3VectorMag ) ) * 180./TMath::Pi();
+		double PTmissMomentum = stv_tool.ReturnPt();
+		double TrueDeltaAlphaT = stv_tool.ReturnDeltaAlphaT();
+		double TrueDeltaPhiT = stv_tool.ReturnDeltaPhiT();
+		double ECal = stv_tool.ReturnECal();
+		double EQE = stv_tool.ReturnEQE();
+		double TrueQ2 = stv_tool.ReturnQ2();	
 
 		// ----------------------------------------------------------------------------------------------------------------------------------
 
 		if (
-		    // Demand that the true muon / proton start points and the true proton end point are contained
-//		    InFV(VertexLocation) == true //&& MuonContainedEndPoint == true 
-//		    && ProtonContainedEndPoint == true
-		    // Length cut
-//		    && MuonLength > ProtonLength
-		    // Angle selection cuts
-//		    && fabs(DeltaThetaProtonMuon - DeltaThetaCentralValue) < DeltaThetaOpeningAngle
-		    /*&&*/ DeltaThetaProtonMuon < DeltaThetaCut
-		    //&& fabs(TrueDeltaPhiProtonMuon_Deg - DeltaPhiCentralValue) < DeltaPhiOpeningAngle
-		    // Momentum threshold
-		    && MuonMomentum > ArrayNBinsMuonMomentum[0]
-		    && ProtonMomentum > ArrayNBinsProtonMomentum[0]
-		    // Same evenst fill all the STV plots
+			MuonMomentum > ArrayNBinsMuonMomentum[0]
+		     && ProtonMomentum > ArrayNBinsProtonMomentum[0]
 		) {
 
 			if (		
-			    // Same evenst fill all the STV plots    
+			    // Same events fill all the STV plots
+			        
 			    PTmissMomentum > ArrayNBinsDeltaPT[0] && PTmissMomentum < ArrayNBinsDeltaPT[NBinsDeltaPT]
 			    && TrueDeltaAlphaT > ArrayNBinsDeltaAlphaT[0] && TrueDeltaAlphaT < ArrayNBinsDeltaAlphaT[NBinsDeltaAlphaT]
 		 	    && TrueDeltaPhiT > ArrayNBinsDeltaPhiT[0] && TrueDeltaPhiT < ArrayNBinsDeltaPhiT[NBinsDeltaPhiT]
+		 	    
 			    && MuonMomentum < ArrayNBinsMuonMomentum[NBinsMuonMomentum]  
 			    && ProtonMomentum < ArrayNBinsProtonMomentum[NBinsProtonMomentum]
+			    
 			    && MuonCosTheta > ArrayNBinsMuonCosTheta[0]
 			    && MuonCosTheta < ArrayNBinsMuonCosTheta[NBinsMuonCosTheta]
 			    && ProtonCosTheta > ArrayNBinsProtonCosTheta[0]
 			    && ProtonCosTheta < ArrayNBinsProtonCosTheta[NBinsProtonCosTheta]
-			    && ECal > ArrayNBinsECal[0]
-			    && EQE > ArrayNBinsEQE[0]
-			    && TrueQ2 > ArrayNBinsQ2[0]
-			    && ECal < ArrayNBinsECal[NBinsECal]
-			    && EQE < ArrayNBinsEQE[NBinsEQE]
-			    && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
+			    
+			    && ECal > ArrayNBinsECal[0] && ECal < ArrayNBinsECal[NBinsECal]
+			    && EQE > ArrayNBinsEQE[0] && EQE < ArrayNBinsEQE[NBinsEQE]
+			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
+			    
 			) {
 
 				TrueDeltaPTPlot->Fill(PTmissMomentum,weight);
@@ -421,26 +366,11 @@ void GenieAnalysis::Loop() {
 				TrueEQEPlot->Fill(EQE,weight);
 				TrueQ2Plot->Fill(TrueQ2,weight);
 
-	
 				CounterSTVEventsPassedSelection++;
 				if (qel==1) { CounterSTVQEEventsPassedSelection++; }
 				if (mec==1) { CounterSTVMECEventsPassedSelection++; }
 				if (res==1) { CounterSTVRESEventsPassedSelection++; }
 				if (dis==1) { CounterSTVDISEventsPassedSelection++; }
-
-/*			}
-
-			if (		
-			    // Same evenst fill all the CCQELike plots  
-			    MuonMomentum < ArrayNBinsMuonMomentum[NBinsMuonMomentum]  
-			    && ProtonMomentum < ArrayNBinsProtonMomentum[NBinsProtonMomentum]
-			    && MuonCosTheta > ArrayNBinsMuonCosTheta[0]
-			    && MuonCosTheta < ArrayNBinsMuonCosTheta[NBinsMuonCosTheta]
-			    && ProtonCosTheta > ArrayNBinsProtonCosTheta[0]
-			    && ProtonCosTheta < ArrayNBinsProtonCosTheta[NBinsProtonCosTheta]
-			    && PTmissMomentum < MaxTransMissMomentum
-			    && fabs(DeltaPhiProtonMuon - DeltaPhiCentralValue) < DeltaPhiOpeningAngle
-			) {*/
 
 				TrueMuonMomentumPlot->Fill(MuonMomentum,weight);
 				TrueMuonPhiPlot->Fill(MuonPhi,weight);
@@ -448,19 +378,13 @@ void GenieAnalysis::Loop() {
 
 				TrueProtonMomentumPlot->Fill(ProtonMomentum,weight);
 				TrueProtonPhiPlot->Fill(ProtonPhi,weight);
-				TrueProtonCosThetaPlot->Fill(ProtonCosTheta,weight);
-
-				CounterCCQElikeEventsPassedSelection++;
-				if (qel==1) { CounterCCQElikeQEEventsPassedSelection++; }
-				if (mec==1) { CounterCCQElikeMECEventsPassedSelection++; }
-				if (res==1) { CounterCCQElikeRESEventsPassedSelection++; }
-				if (dis==1) { CounterCCQElikeDISEventsPassedSelection++; }
+				TrueProtonCosThetaPlot->Fill(ProtonCosTheta,weight);			
 
 			}
 
-		} // End of the angle selection cuts && the demand that we fill the plots with the same events
+		} // End of the selection cuts && the demand that we fill the plots with the same events
 
-		// ------------------------------------------------------------------------------------------------------------------------------------------------------
+		// ---------------------------------------------------------------------------------------------------------------------------------
 
 	} // End of the loop over the events
 
@@ -471,7 +395,7 @@ void GenieAnalysis::Loop() {
 	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
 	std::cout << std::endl;
 
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -----------------------------------------------------------------------------------------------------------------------------------------
 
 	// STV analysis
 	
@@ -490,33 +414,15 @@ void GenieAnalysis::Loop() {
 
 	std::cout << "Success percetage in selecting DIS events = " << 
 	double(CounterSTVDISEventsPassedSelection)/ double(CounterSTVEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
-
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-	// CCQElike analysis
 	
-//	std::cout << std::endl << "----------------------- CCQElike analysis -------------------------" << std::endl << std::endl;
-//	std::cout << "Percetage of events passing the selection cuts = " << 
-//	double(CounterCCQElikeEventsPassedSelection)/ double(nentries)*100. << " %" << std::endl; std::cout << std::endl;
+	std::cout << "Success percetage in selecting COH events = " << 
+	double(CounterSTVDISEventsPassedSelection)/ double(CounterSTVEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
 
-//	std::cout << "Success percetage in selecting QE events = " << 
-//	double(CounterCCQElikeQEEventsPassedSelection)/ double(CounterCCQElikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
-
-//	std::cout << "Success percetage in selecting MEC events = " << 
-//	double(CounterCCQElikeMECEventsPassedSelection)/ double(CounterCCQElikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
-
-//	std::cout << "Success percetage in selecting RES events = " << 
-//	double(CounterCCQElikeRESEventsPassedSelection)/ double(CounterCCQElikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
-
-//	std::cout << "Success percetage in selecting DIS events = " << 
-//	double(CounterCCQElikeDISEventsPassedSelection)/ double(CounterCCQElikeEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
-
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Reweight the genie sample with the cv tune weights to NEvents in the nominal samples
 
-	double ScalingFactor = (double)(nentries)/ SumCVWeights;
-//	double ScalingFactor = 1.;
+	double ScalingFactor = (double)(nentries) / SumCVWeights;
 	
 	TrueMuonMomentumPlot->Scale(ScalingFactor);
 	TrueMuonPhiPlot->Scale(ScalingFactor);
@@ -527,8 +433,13 @@ void GenieAnalysis::Loop() {
 	TrueProtonCosThetaPlot->Scale(ScalingFactor);
 
 	TrueECalPlot->Scale(ScalingFactor);
+	TrueEQEPlot->Scale(ScalingFactor);	
 	TrueQ2Plot->Scale(ScalingFactor);
+	
+	TrueDeltaPTPlot->Scale(ScalingFactor);
+	TrueDeltaAlphaTPlot->Scale(ScalingFactor);
+	TrueDeltaPhiTPlot->Scale(ScalingFactor);
 
-	// ------------------------------------------------------------------------------------------------------------------------------------------------------------
+	// --------------------------------------------------------------------------------------------------------------------------------------------
 
 } // End of the program
