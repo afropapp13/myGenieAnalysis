@@ -221,6 +221,7 @@ void GenieAnalysis::Loop() {
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
 	int SumCVWeights = 0;
+	int SumSelectedCVWeights = 0;	
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -235,10 +236,9 @@ void GenieAnalysis::Loop() {
 		tweights->GetEntry(jentry);
 		double weight = cv_weight;
 //		double weight = 1.;		
-		if (weight <= 0 || weight >=10) { continue; }
-
-		SumCVWeights += weight;		
-
+		if (weight <= 0 || weight >= 10) { continue; }
+		SumCVWeights += weight;
+		
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
 		// CV weight studies
@@ -357,6 +357,8 @@ void GenieAnalysis::Loop() {
 			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
 			    
 			) {
+			
+				SumSelectedCVWeights += weight;
 
 				TrueDeltaPTPlot->Fill(PTmissMomentum,weight);
 				TrueDeltaAlphaTPlot->Fill(TrueDeltaAlphaT,weight);
@@ -388,13 +390,6 @@ void GenieAnalysis::Loop() {
 
 	} // End of the loop over the events
 
-	file->cd();
-	file->Write();
-
-	std::cout << std::endl;
-	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
-	std::cout << std::endl;
-
 	// -----------------------------------------------------------------------------------------------------------------------------------------
 
 	// STV analysis
@@ -422,7 +417,11 @@ void GenieAnalysis::Loop() {
 
 	// Reweight the genie sample with the cv tune weights to NEvents in the nominal samples
 
-	double ScalingFactor = (double)(nentries) / SumCVWeights;
+//	double ScalingFactor = (double)(CounterSTVEventsPassedSelection) / (double)(SumSelectedCVWeights);
+	double ScalingFactor = 1. / (double)(SumCVWeights);
+//	double ScalingFactor = (double)(SumSelectedCVWeights) / (double)(SumCVWeights);
+//	double ScalingFactor = 1.;	
+//	double ScalingFactor = 1. / (double)(nentries);	
 	
 	TrueMuonMomentumPlot->Scale(ScalingFactor);
 	TrueMuonPhiPlot->Scale(ScalingFactor);
@@ -439,6 +438,15 @@ void GenieAnalysis::Loop() {
 	TrueDeltaPTPlot->Scale(ScalingFactor);
 	TrueDeltaAlphaTPlot->Scale(ScalingFactor);
 	TrueDeltaPhiTPlot->Scale(ScalingFactor);
+	
+	// --------------------------------------------------------------------------------------------------------------------------------------------	
+	
+	file->cd();
+	file->Write();
+
+	std::cout << std::endl;
+	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
+	std::cout << std::endl;	
 
 	// --------------------------------------------------------------------------------------------------------------------------------------------
 
