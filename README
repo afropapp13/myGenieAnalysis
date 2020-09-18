@@ -1,2 +1,5 @@
 .L flux_avg_tot_cc_xsec.C
+
 flux_avg_tot_cc_xsec("FluxHist_volAVTPC.root", "numu", "xsec_argon40_spline_CCinclMEC_G18_10a_02_11a.root")
+
+flux_avg_tot_cc_xsec("MCC9_FluxHist_volTPCActive.root", "hEnumu_cv", "xsec_argon40_spline_CCinclMEC_G18_10a_02_11a.root")

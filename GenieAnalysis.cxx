@@ -23,6 +23,25 @@
 using namespace std;
 using namespace Constants;
 
+void Reweight(TH1D* h, double SF) {
+
+	int NBins = h->GetXaxis()->GetNbins();
+
+	for (int i = 0; i < NBins; i++) {
+
+		double CurrentEntry = h->GetBinContent(i+1);
+		double NewEntry = CurrentEntry * SF / h->GetBinWidth(i);
+
+		double CurrentError = h->GetBinError(i+1);
+		double NewError = CurrentError * SF / h->GetBinWidth(i);
+
+		h->SetBinContent(i+1,NewEntry); 
+		h->SetBinError(i+1,NewError); 
+
+	}
+
+}
+
 void GenieAnalysis::Loop() {
 
 	if (fChain == 0) return;
@@ -32,7 +51,7 @@ void GenieAnalysis::Loop() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
-	TString FileNameAndPath = "../mySTVAnalysis/myFiles/"+UBCodeVersion+"/CCQEAnalysis_Genie_"+UBCodeVersion+".root";
+	TString FileNameAndPath = "OutputFiles/CCQEAnalysis_"+OutFileName+"_"+UBCodeVersion+".root";
 	TFile* file = new TFile(FileNameAndPath,"recreate");
 	std::cout << std::endl << std::endl;
 
@@ -55,6 +74,10 @@ void GenieAnalysis::Loop() {
 	TH1D* RecoECalPlot = new TH1D("RecoECalPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
 	TH1D* RecoEQEPlot = new TH1D("RecoEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
 	TH1D* RecoQ2Plot = new TH1D("RecoQ2Plot",LabelXAxisQ2,NBinsQ2,ArrayNBinsQ2);
+
+	TH1D* RecokMissPlot = new TH1D("RecokMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* RecoPMissMinusPlot = new TH1D("RecoPMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* RecoPMissPlot = new TH1D("RecoPMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -91,6 +114,10 @@ void GenieAnalysis::Loop() {
 	TH1D* CC1pTrueECalPlot = new TH1D("CC1pTrueECalPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
 	TH1D* CC1pTrueEQEPlot = new TH1D("CC1pTrueEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
 	TH1D* CC1pTrueQ2Plot = new TH1D("CC1pTrueQ2Plot",LabelXAxisQ2,NBinsQ2,ArrayNBinsQ2);
+
+	TH1D* CC1pRecokMissPlot = new TH1D("CC1pRecokMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* CC1pRecoPMissMinusPlot = new TH1D("CC1pRecoPMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* CC1pRecoPMissPlot = new TH1D("CC1pRecoPMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
 
 	// 2D Reco True Transverse Variables
 
@@ -141,6 +168,10 @@ void GenieAnalysis::Loop() {
 	TH1D* BkgRecoTrueEQEPlot = new TH1D("NonCC1pRecoEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
 	TH1D* BkgRecoTrueQ2Plot = new TH1D("NonCC1pRecoQ2Plot",LabelXAxisQ2,NBinsQ2,ArrayNBinsQ2);
 
+	TH1D* NonCC1pRecokMissPlot = new TH1D("NonCC1pRecokMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* NonCC1pRecoPMissMinusPlot = new TH1D("NonCC1pRecoPMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* NonCC1pRecoPMissPlot = new TH1D("NonCC1pRecoPMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+
 	// 2D Reco True Transverse Variables
 
 	TH2D* BkgRecoTrueDeltaPTPlot2D = new TH2D("NonCC1pRecoDeltaPTPlot2D",
@@ -187,6 +218,10 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueEQEPlot = new TH1D("TrueEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
 	TH1D* TrueQ2Plot = new TH1D("TrueQ2Plot",LabelXAxisQ2,NBinsQ2,ArrayNBinsQ2);
 
+	TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
 	TH2D* CVWeightsVsEvPlot = new TH2D("CVWeightsVsEvPlot",";Ev [GeV];cv weights",200,0.,2.,300,0.,3.);
@@ -194,7 +229,6 @@ void GenieAnalysis::Loop() {
 
 	// ------------------------------------------------------------------------------------------------------------------------------------------------
 
-	SetLArTools();
 	Tools tools;
 
 	// ---------------------------------------------------------------------------------------------------------------------------------
@@ -209,14 +243,12 @@ void GenieAnalysis::Loop() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
-	// T2K Weights to make GENIE consistent with the MicroBooNE tune
+	// T2K Weights to make GENIE consistent with the MicroBooNE tune v1
 	
-	TFile* fweights = TFile::Open("mySamples/myWeights.root");
-
-	TTree *tweights = (TTree*)fweights->Get("ub_tune_cv");
-
-	float cv_weight;
-	tweights->SetBranchAddress("cv_weight", &cv_weight);
+	TFile* fweights_uB_Tune_v1 = TFile::Open("mySamples/myWeights_uB_Tune_v1.root");
+	TTree *tweights_uB_Tune_v1 = (TTree*)fweights_uB_Tune_v1->Get("ub_tune_cv");
+	float cv_weight_uB_Tune_v1;
+	tweights_uB_Tune_v1->SetBranchAddress("cv_weight", &cv_weight_uB_Tune_v1);
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -233,9 +265,17 @@ void GenieAnalysis::Loop() {
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
-		tweights->GetEntry(jentry);
-		double weight = cv_weight;
-//		double weight = 1.;		
+		tweights_uB_Tune_v1->GetEntry(jentry);
+		double weight = 1.;
+		double cv_weight = 1.;
+
+		if (OutFileName == "Genie_v3_0_6_uB_Tune_1") { 
+		
+			cv_weight = cv_weight_uB_Tune_v1;	
+			weight = cv_weight; 
+
+		}
+
 		if (weight <= 0 || weight >= 10) { continue; }
 		SumCVWeights += weight;
 		
@@ -330,6 +370,10 @@ void GenieAnalysis::Loop() {
 		double EQE = stv_tool.ReturnEQE();
 		double TrueQ2 = stv_tool.ReturnQ2();	
 
+		double TruekMiss = stv_tool.ReturnkMiss();
+		double TruePMissMinus = stv_tool.ReturnPMissMinus();
+		double TrueMissMomentum = stv_tool.ReturnPMiss();
+
 		// ----------------------------------------------------------------------------------------------------------------------------------
 
 		if (
@@ -338,7 +382,7 @@ void GenieAnalysis::Loop() {
 		) {
 
 			if (		
-			    // Same events fill all the STV plots
+			    // Same events fill all the plots
 			        
 			    PTmissMomentum > ArrayNBinsDeltaPT[0] && PTmissMomentum < ArrayNBinsDeltaPT[NBinsDeltaPT]
 			    && TrueDeltaAlphaT > ArrayNBinsDeltaAlphaT[0] && TrueDeltaAlphaT < ArrayNBinsDeltaAlphaT[NBinsDeltaAlphaT]
@@ -357,7 +401,7 @@ void GenieAnalysis::Loop() {
 			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
 			    
 			) {
-			
+
 				SumSelectedCVWeights += weight;
 
 				TrueDeltaPTPlot->Fill(PTmissMomentum,weight);
@@ -381,6 +425,10 @@ void GenieAnalysis::Loop() {
 				TrueProtonMomentumPlot->Fill(ProtonMomentum,weight);
 				TrueProtonPhiPlot->Fill(ProtonPhi,weight);
 				TrueProtonCosThetaPlot->Fill(ProtonCosTheta,weight);			
+
+				TruekMissPlot->Fill(TruekMiss,weight);
+				TruePMissMinusPlot->Fill(TruePMissMinus,weight);
+				TruePMissPlot->Fill(TrueMissMomentum,weight);
 
 			}
 
@@ -415,33 +463,44 @@ void GenieAnalysis::Loop() {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Reweight the genie sample with the cv tune weights to NEvents in the nominal samples
+	// Moving forward towards a cross section extraction
+	// Reweight the genie sample with the sum of cv tune weights / number of events
+	// Multiply by the flux integrated xsec that has been calculated using flux_averaged_total_xsec
 
-//	double ScalingFactor = (double)(CounterSTVEventsPassedSelection) / (double)(SumSelectedCVWeights);
 	double ScalingFactor = 1. / (double)(SumCVWeights);
-//	double ScalingFactor = (double)(SumSelectedCVWeights) / (double)(SumCVWeights);
-//	double ScalingFactor = 1.;	
-//	double ScalingFactor = 1. / (double)(nentries);	
-	
-	TrueMuonMomentumPlot->Scale(ScalingFactor);
-	TrueMuonPhiPlot->Scale(ScalingFactor);
-	TrueMuonCosThetaPlot->Scale(ScalingFactor);
 
-	TrueProtonMomentumPlot->Scale(ScalingFactor);
-	TrueProtonPhiPlot->Scale(ScalingFactor);
-	TrueProtonCosThetaPlot->Scale(ScalingFactor);
+	// -------------------------------------------------------------------------------------------------------------------------------------------
 
-	TrueECalPlot->Scale(ScalingFactor);
-	TrueEQEPlot->Scale(ScalingFactor);	
-	TrueQ2Plot->Scale(ScalingFactor);
+	// Flux integrated cross sections
+
+	if (OutFileName == "Genie_v3_0_6_uB_Tune_1" || OutFileName == "Genie_v3_0_6_Out_Of_The_Box") { ScalingFactor = ScalingFactor * G18_10a_02_11a_FluxIntegratedXSection ; }
+	if (OutFileName == "SuSav2") { ScalingFactor = ScalingFactor * SuSav2FluxIntegratedXSection ; }
+
+	file->cd();
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------
+
+	// Last step
+	// Division by bin width to get the cross sections
 	
-	TrueDeltaPTPlot->Scale(ScalingFactor);
-	TrueDeltaAlphaTPlot->Scale(ScalingFactor);
-	TrueDeltaPhiTPlot->Scale(ScalingFactor);
+	Reweight(TrueMuonMomentumPlot,ScalingFactor);
+	Reweight(TrueMuonPhiPlot,ScalingFactor);
+	Reweight(TrueMuonCosThetaPlot,ScalingFactor);
+
+	Reweight(TrueProtonMomentumPlot,ScalingFactor);
+	Reweight(TrueProtonPhiPlot,ScalingFactor);
+	Reweight(TrueProtonCosThetaPlot,ScalingFactor);
+
+	Reweight(TrueECalPlot,ScalingFactor);
+	Reweight(TrueEQEPlot,ScalingFactor);	
+	Reweight(TrueQ2Plot,ScalingFactor);
+	
+	Reweight(TrueDeltaPTPlot,ScalingFactor);
+	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
+	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
 	
 	// --------------------------------------------------------------------------------------------------------------------------------------------	
 	
-	file->cd();
 	file->Write();
 
 	std::cout << std::endl;
