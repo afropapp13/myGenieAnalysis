@@ -498,6 +498,10 @@ void GenieAnalysis::Loop() {
 	Reweight(TrueDeltaPTPlot,ScalingFactor);
 	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
 	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
+
+	Reweight(TruekMissPlot,ScalingFactor);
+	Reweight(TruePMissPlot,ScalingFactor);
+	Reweight(TruePMissMinusPlot,ScalingFactor);
 	
 	// --------------------------------------------------------------------------------------------------------------------------------------------	
 	
