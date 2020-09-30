@@ -33,7 +33,7 @@ void GenieAnalysis::Loop() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
-	TString FileNameAndPath = "OutputFiles/CCQEAnalysis_"+OutFileName+"_"+UBCodeVersion+".root";
+	TString FileNameAndPath = "OutputFiles/STVAnalysis_"+OutFileName+".root";
 	TFile* file = new TFile(FileNameAndPath,"recreate");
 	std::cout << std::endl << std::endl;
 
@@ -190,7 +190,7 @@ void GenieAnalysis::Loop() {
 		TVector3 Proton3Vector(pxf[ProtonIndex],pyf[ProtonIndex],pzf[ProtonIndex]); // GeV
 		TLorentzVector Proton4Vector(pxf[ProtonIndex],pyf[ProtonIndex],pzf[ProtonIndex],Ef[ProtonIndex]); // GeV
 		double ProtonMomentum = pf[ProtonIndex]; // GeV / c
-		double ProtonTheta = TMath::ACos(cthf[ProtonIndex]) * 180. / TMath::Pi(); // deg
+//		double ProtonTheta = TMath::ACos(cthf[ProtonIndex]) * 180. / TMath::Pi(); // deg
 		double ProtonCosTheta = cthf[ProtonIndex];
 		double ProtonPhi = Proton4Vector.Phi() * 180. / TMath::Pi(); // deg
 		double ProtonE = Proton4Vector.E(); // GeV
@@ -329,6 +329,7 @@ void GenieAnalysis::Loop() {
 	if (OutFileName == "Genie_v3_0_6_uB_Tune_1" || OutFileName == "Genie_v3_0_6_Out_Of_The_Box") { ScalingFactor = ScalingFactor * G18_10a_02_11a_FluxIntegratedXSection ; }
 	if (OutFileName == "SuSav2") { ScalingFactor = ScalingFactor * SuSav2FluxIntegratedXSection ; }
 	if (OutFileName == "GENIEv2") { ScalingFactor = ScalingFactor * R_2_12_10_FluxIntegratedXSection ; }
+	if (OutFileName == "GENIEv3_0_4") { ScalingFactor = ScalingFactor * R_3_0_4_FluxIntegratedXSection ; }
 
 	file->cd();
 

@@ -23,6 +23,7 @@ TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_
 //TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_uB_Tune_1"; 
 //TString FileName = "SuSav2_argon40_CCinclMEC_BNBFlux"; TString OutFileName = "SuSav2";
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-2_12_10"; TString OutFileName = "GENIEv2"; 
+//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_4"; TString OutFileName = "GENIEv3_0_4"; 
 
 TString Extension = "";
 
