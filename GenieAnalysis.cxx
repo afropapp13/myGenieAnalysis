@@ -244,9 +244,9 @@ void GenieAnalysis::Loop() {
 			    && ProtonCosTheta > ArrayNBinsProtonCosTheta[0]
 			    && ProtonCosTheta < ArrayNBinsProtonCosTheta[NBinsProtonCosTheta]
 			    
-			    && ECal > ArrayNBinsECal[0] && ECal < ArrayNBinsECal[NBinsECal]
-			    && EQE > ArrayNBinsEQE[0] && EQE < ArrayNBinsEQE[NBinsEQE]
-			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
+//			    && ECal > ArrayNBinsECal[0] && ECal < ArrayNBinsECal[NBinsECal]
+//			    && EQE > ArrayNBinsEQE[0] && EQE < ArrayNBinsEQE[NBinsEQE]
+//			    && TrueQ2 > ArrayNBinsQ2[0] && TrueQ2 < ArrayNBinsQ2[NBinsQ2]
 			    
 			) {
 
@@ -320,7 +320,9 @@ void GenieAnalysis::Loop() {
 	// Reweight the genie sample with the sum of cv tune weights / number of events
 	// Multiply by the flux integrated xsec that has been calculated using flux_averaged_total_xsec
 
-	double ScalingFactor = 1. / (double)(SumCVWeights);
+//	double ScalingFactor = 1. / (double)(SumCVWeights);
+
+	double ScalingFactor = 1. / (double)(nentries);
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------
 
