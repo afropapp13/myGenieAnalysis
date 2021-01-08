@@ -124,7 +124,7 @@ void GenieAnalysis::Loop() {
 
 		}
 
-		if (weight <= 0 || weight >= 10) { continue; }
+		if (weight <= 0 || weight >= 30) { continue; }
 		SumCVWeights += weight;
 		
 		// ---------------------------------------------------------------------------------------------------------------------------------
