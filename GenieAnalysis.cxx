@@ -337,8 +337,7 @@ void GenieAnalysis::Loop() {
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------
 
-	// Last step
-	// Division by bin width to get the cross sections
+	// Division by bin width to get the cross sections in true variables
 	
 	Reweight(TrueMuonMomentumPlot,ScalingFactor);
 	Reweight(TrueMuonPhiPlot,ScalingFactor);
@@ -362,10 +361,51 @@ void GenieAnalysis::Loop() {
 
 	Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
 	Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
+
+	file->cd();
+	file->Write();
+
+	// -------------------------------------------------------------------------------------------------------------------------------------------
+
+//	// Use smearing matrix to get cross sections in reco space
+//	// Using the smearing matrices from the available individual runs
+
+//	std::vector<TString> Runs{"Run1"};
+//	const int NRuns = Runs.size();
+
+//	for (int WhichRun = 0; WhichRun < NRuns; WhichRun++) {
+
+//		TFile* FileMigrationMatrix = TFile::Open("../mySTVAnalysis/myMigrationMatrices/"+UBCodeVersion+"/FileMigrationMatrices_Overlay9_"+Runs[WhichRun]+"_"+UBCodeVersion+".root","readonly");
+
+//		TH1D* RecoMuonMomentumPlot = SmearTrueToReco(TrueMuonMomentumPlot,FileMigrationMatrix,"MuonMomentumPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoMuonCosThetaPlot = SmearTrueToReco(TrueMuonCosThetaPlot,FileMigrationMatrix,"MuonCosThetaPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoMuonPhiPlot = SmearTrueToReco(TrueMuonCosThetaPlot,FileMigrationMatrix,"MuonPhiPlot","_"+Runs[WhichRun]);
+
+//		TH1D* RecoProtonMomentumPlot = SmearTrueToReco(TrueProtonMomentumPlot,FileMigrationMatrix,"ProtonMomentumPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoProtonCosThetaPlot = SmearTrueToReco(TrueProtonCosThetaPlot,FileMigrationMatrix,"ProtonCosThetaPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoProtonPhiPlot = SmearTrueToReco(TrueProtonCosThetaPlot,FileMigrationMatrix,"ProtonPhiPlot","_"+Runs[WhichRun]);
+
+//		TH1D* RecoDeltaPTPlot = SmearTrueToReco(TrueDeltaPTPlot,FileMigrationMatrix,"DeltaPTPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoDeltaAlphaTPlot = SmearTrueToReco(TrueDeltaAlphaTPlot,FileMigrationMatrix,"DeltaAlphaTPlot","_"+Runs[WhichRun]);
+//		TH1D* RecoDeltaPhiTPlot = SmearTrueToReco(TrueDeltaPhiTPlot,FileMigrationMatrix,"DeltaPhiTPlot","_"+Runs[WhichRun]);
+
+//		file->cd();
+
+//		RecoMuonMomentumPlot->Write();
+//		RecoMuonCosThetaPlot->Write();
+//		RecoMuonPhiPlot->Write();
+
+//		RecoProtonMomentumPlot->Write();
+//		RecoProtonCosThetaPlot->Write();
+//		RecoProtonPhiPlot->Write();
+
+//		RecoDeltaPTPlot->Write();
+//		RecoDeltaAlphaTPlot->Write();
+//		RecoDeltaPhiTPlot->Write();
+
+//	}
 	
 	// --------------------------------------------------------------------------------------------------------------------------------------------	
-	
-	file->Write();
 
 	std::cout << std::endl;
 	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
