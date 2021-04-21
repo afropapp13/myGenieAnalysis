@@ -19,10 +19,11 @@
 
 #include "../myClasses/Tools.h"
 #include "../myClasses/STV_Tools.h"
-#include "../../../../../Secondary_Code/myFunctions.cpp"
+#include "../../../../../Secondary_Code/mySimFunctions.cpp"
 
 using namespace std;
-using namespace Constants;
+
+// ---------------------------------------------------------------------------------------------------------------------------------
 
 void GenieAnalysis::Loop() {
 
@@ -87,7 +88,8 @@ void GenieAnalysis::Loop() {
 	int CounterSTVQEEventsPassedSelection = 0;
 	int CounterSTVMECEventsPassedSelection = 0;
 	int CounterSTVRESEventsPassedSelection = 0;
-	int CounterSTVDISEventsPassedSelection = 0;	
+	int CounterSTVDISEventsPassedSelection = 0;
+	int CounterSTVCOHEventsPassedSelection = 0;		
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -265,6 +267,7 @@ void GenieAnalysis::Loop() {
 				if (mec==1) { CounterSTVMECEventsPassedSelection++; }
 				if (res==1) { CounterSTVRESEventsPassedSelection++; }
 				if (dis==1) { CounterSTVDISEventsPassedSelection++; }
+				if (coh==1) { CounterSTVCOHEventsPassedSelection++; }				
 
 				TrueMuonMomentumPlot->Fill(MuonMomentum,weight);
 				TrueMuonPhiPlot->Fill(MuonPhi,weight);
@@ -312,7 +315,7 @@ void GenieAnalysis::Loop() {
 	double(CounterSTVDISEventsPassedSelection)/ double(CounterSTVEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;
 	
 	std::cout << "Success percetage in selecting COH events = " << 
-	double(CounterSTVDISEventsPassedSelection)/ double(CounterSTVEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
+	double(CounterSTVCOHEventsPassedSelection)/ double(CounterSTVEventsPassedSelection)*100. << " %" << std::endl; std::cout << std::endl;	
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------
 
