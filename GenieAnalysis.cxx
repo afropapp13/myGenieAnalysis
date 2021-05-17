@@ -151,7 +151,7 @@ void GenieAnalysis::Loop() {
 		
 		// ---------------------------------------------------------------------------------------------------------------------------------	
 
-		int ProtonTagging = 0, ChargedPionTagging = 0;
+		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0;
 		vector <int> ProtonID; ProtonID.clear();
 
 		for (int i = 0; i < nf; i++) {
@@ -169,9 +169,24 @@ void GenieAnalysis::Loop() {
 
 			}
 
+			if (pdgf[i] == NeutralPionPdg)  {
+
+				NeutralPionTagging ++;
+
+			}
+
 		} // End of the loop over the final state particles
 
-		if ( ProtonTagging != 1 || ChargedPionTagging != 0 ) { continue; }
+		// -----------------------------------------------------------------------------------------------------------------------------------
+
+		// Impose signal
+		// 1 muon > 0.1 GeV/c
+		// 1 proton > 0.25 GeV/c
+		// no charged pions > 0.07 GeV/c
+		// no neutral pions of any momenta
+		// any number of neutrons & photons
+
+		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 ) { continue; }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
