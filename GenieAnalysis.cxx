@@ -44,6 +44,12 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueDeltaAlphaTPlot = new TH1D("TrueDeltaAlphaTPlot",LabelXAxisDeltaAlphaT,NBinsDeltaAlphaT,ArrayNBinsDeltaAlphaT);
 	TH1D* TrueDeltaPhiTPlot = new TH1D("TrueDeltaPhiTPlot",LabelXAxisDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);
 
+	TH1D* TrueDeltaPLPlot = new TH1D("TrueDeltaPLPlot",LabelXAxisDeltaPL,NBinsDeltaPL,ArrayNBinsDeltaPL);
+	TH1D* TrueDeltaPnPlot = new TH1D("TrueDeltaPnPlot",LabelXAxisDeltaPn,NBinsDeltaPn,ArrayNBinsDeltaPn);
+	TH1D* TrueDeltaPtxPlot = new TH1D("TrueDeltaPtxPlot",LabelXAxisDeltaPtx,NBinsDeltaPtx,ArrayNBinsDeltaPtx);
+	TH1D* TrueDeltaPtyPlot = new TH1D("TrueDeltaPtyPlot",LabelXAxisDeltaPty,NBinsDeltaPty,ArrayNBinsDeltaPty);
+	TH1D* TrueAPlot = new TH1D("TrueAPlot",LabelXAxisA,NBinsA,ArrayNBinsA);
+
 	TH1D* TrueMuonMomentumPlot = new TH1D("TrueMuonMomentumPlot",LabelXAxisMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
 	TH1D* TrueMuonPhiPlot = new TH1D("TrueMuonPhiPlot",LabelXAxisMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
 	TH1D* TrueMuonCosThetaPlot = new TH1D("TrueMuonCosThetaPlot",LabelXAxisMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
@@ -67,9 +73,9 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueCCQEECalPlot = new TH1D("TrueCCQEECalPlot",LabelXAxisECal,CCQENBinsECal,CCQEArrayNBinsECal);
 	TH1D* TrueCCQEQ2Plot = new TH1D("TrueCCQEQ2Plot",LabelXAxisQ2,CCQENBinsQ2,CCQEArrayNBinsQ2);	
 
-	// TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
-	// TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
-	// TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+	 TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	 TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	 TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
 
 	// For now and until box opening
 	int NBins2DAnalysis = 4;
@@ -162,7 +168,7 @@ void GenieAnalysis::Loop() {
 		
 		// ---------------------------------------------------------------------------------------------------------------------------------	
 
-		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0;
+		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, TrueHeavierMesonCounter = 0;
 		vector <int> ProtonID; ProtonID.clear();
 
 		for (int i = 0; i < nf; i++) {
@@ -186,18 +192,21 @@ void GenieAnalysis::Loop() {
 
 			}
 
+			if ( pdgf[i] != NeutralPionPdg && fabs(pdgf[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgf[i]) ) { TrueHeavierMesonCounter++; }
+
 		} // End of the loop over the final state particles
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
 		// Impose signal
 		// 1 muon > 0.1 GeV/c
-		// 1 proton > 0.25 GeV/c
+		// 1 proton > 0.3 GeV/c
 		// no charged pions > 0.07 GeV/c
 		// no neutral pions of any momenta
 		// any number of neutrons & photons
 
 		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 ) { continue; }
+		if ( TrueHeavierMesonCounter != 0 ) { continue; }
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -246,9 +255,15 @@ void GenieAnalysis::Loop() {
 		double EQE = stv_tool.ReturnEQE();
 		double TrueQ2 = stv_tool.ReturnQ2();	
 
-		// double TruekMiss = stv_tool.ReturnkMiss();
-		// double TruePMissMinus = stv_tool.ReturnPMissMinus();
-		// double TrueMissMomentum = stv_tool.ReturnPMiss();
+		double TruekMiss = stv_tool.ReturnkMiss();
+		double TruePMissMinus = stv_tool.ReturnPMissMinus();
+		double TrueMissMomentum = stv_tool.ReturnPMiss();
+
+		double TruePL = stv_tool.ReturnPL();
+		double TruePn = stv_tool.ReturnPn();
+		double TruePtx = stv_tool.ReturnPtx();
+		double TruePty = stv_tool.ReturnPty();
+		double TrueA = stv_tool.ReturnA();
 
 		// ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -303,9 +318,15 @@ void GenieAnalysis::Loop() {
 				TrueProtonPhiPlot->Fill(ProtonPhi,weight);
 				TrueProtonCosThetaPlot->Fill(ProtonCosTheta,weight);			
 
-				// TruekMissPlot->Fill(TruekMiss,weight);
-				// TruePMissMinusPlot->Fill(TruePMissMinus,weight);
-				// TruePMissPlot->Fill(TrueMissMomentum,weight);
+				TruekMissPlot->Fill(TruekMiss,weight);
+				TruePMissMinusPlot->Fill(TruePMissMinus,weight);
+				TruePMissPlot->Fill(TrueMissMomentum,weight);
+
+				TrueDeltaPLPlot->Fill(TruePL,weight);
+				TrueDeltaPnPlot->Fill(TruePn,weight);
+				TrueDeltaPtxPlot->Fill(TruePtx,weight);
+				TrueDeltaPtyPlot->Fill(TruePty,weight);
+				TrueAPlot->Fill(TrueA,weight);
 
 				// 2D Analysis
 		
