@@ -111,12 +111,34 @@ void GenieAnalysis::Loop() {
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
-	// T2K Weights to make GENIE consistent with the MicroBooNE tune v1
+	// T2K Weights to make GENIE consistent with the MicroBooNE tune v2 (or v1)
 	
-	TFile* fweights_uB_Tune_v1 = TFile::Open("mySamples/myWeights_uB_Tune_v1.root");
-	TTree *tweights_uB_Tune_v1 = (TTree*)fweights_uB_Tune_v1->Get("ub_tune_cv");
-	float cv_weight_uB_Tune_v1;
-	tweights_uB_Tune_v1->SetBranchAddress("cv_weight", &cv_weight_uB_Tune_v1);
+	TFile* fweights = nullptr;
+	TTree* tweights = nullptr;
+	float cv_weight = -99.;
+
+	if (OutFileName == "Genie_v3_0_6_uB_Tune_1") {
+
+		fweights = TFile::Open("mySamples/myWeights_uB_Tune_v1.root");
+		tweights = (TTree*)fweights->Get("ub_tune_cv");
+		tweights->SetBranchAddress("cv_weight", &cv_weight);
+
+	}
+
+	if (OutFileName == "Genie_v3_0_6_Nominal" || OutFileName == "Genie_v3_0_6_NoFSI" || OutFileName == "Genie_v3_0_6_NoRPA" || OutFileName == "Genie_v3_0_6_NoCoulomb" 
+	|| OutFileName == "Genie_v3_0_6_hN2018" || OutFileName == "Genie_v3_0_6_RFG" || OutFileName == "Genie_v3_0_6_EffSF") {
+
+		if (OutFileName == "Genie_v3_0_6_Nominal" || OutFileName == "Genie_v3_0_6_NoFSI" || OutFileName == "Genie_v3_0_6_hN2018") 
+			{ fweights = TFile::Open("mySamples/myWeights_uB_Tune_Nominal.root"); }
+		if (OutFileName == "Genie_v3_0_6_NoRPA") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_NoRPA.root"); }
+		if (OutFileName == "Genie_v3_0_6_NoCoulomb") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_NoCoulomb.root"); }
+		if (OutFileName == "Genie_v3_0_6_RFG") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_RFG.root"); }
+		if (OutFileName == "Genie_v3_0_6_EffSF") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_EffSF.root"); }
+
+		tweights = (TTree*)fweights->Get("GenericVectors__VARS");
+		tweights->SetBranchAddress("Weight", &cv_weight);
+
+	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
@@ -133,16 +155,11 @@ void GenieAnalysis::Loop() {
 
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
-		tweights_uB_Tune_v1->GetEntry(jentry);
 		double weight = 1.;
-		double cv_weight = 1.;
 
-		if (OutFileName == "Genie_v3_0_6_uB_Tune_1") { 
-		
-			cv_weight = cv_weight_uB_Tune_v1;	
-			weight = cv_weight; 
-
-		}
+		if (OutFileName == "Genie_v3_0_6_uB_Tune_1" || OutFileName == "Genie_v3_0_6_Nominal" || OutFileName == "Genie_v3_0_6_NoFSI" || OutFileName == "Genie_v3_0_6_hN2018" 
+		|| OutFileName == "Genie_v3_0_6_NoRPA" || OutFileName == "Genie_v3_0_6_NoCoulomb" || OutFileName == "Genie_v3_0_6_RFG" || OutFileName == "Genie_v3_0_6_EffSF") 
+			{ tweights->GetEntry(jentry); weight = cv_weight; }
 
 		if (weight <= 0 || weight >= 30) { continue; }
 		SumCVWeights += weight;
@@ -172,30 +189,64 @@ void GenieAnalysis::Loop() {
 		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, TrueHeavierMesonCounter = 0;
 		vector <int> ProtonID; ProtonID.clear();
 
-		for (int i = 0; i < nf; i++) {
+		/*if (OutFileName == "Genie_v3_0_6_NoFSI") {
 
-			if (pdgf[i] == ProtonPdg && pf[i] > ArrayNBinsProtonMomentum[0]) {
+			for (int i = 0; i < ni; i++) {
 
-				ProtonTagging ++;
-				ProtonID.push_back(i);
+				double pi = TMath::Sqrt( TMath::Power(pxi[i],2.) + TMath::Power(pyi[i],2.) + TMath::Power(pzi[i],2.));
 
-			}
+				if (pdgi[i] == ProtonPdg && pi > ArrayNBinsProtonMomentum[0]) {
 
-			if (fabs(pdgf[i]) == AbsChargedPionPdg && pf[i] > ChargedPionMomentumThres)  {
+					ProtonTagging ++;
+					ProtonID.push_back(i);
 
-				ChargedPionTagging ++;
+				}
 
-			}
+				if (fabs(pdgi[i]) == AbsChargedPionPdg && pi > ChargedPionMomentumThres)  {
 
-			if (pdgf[i] == NeutralPionPdg)  {
+					ChargedPionTagging ++;
 
-				NeutralPionTagging ++;
+				}
 
-			}
+				if (pdgi[i] == NeutralPionPdg)  {
 
-			if ( pdgf[i] != NeutralPionPdg && fabs(pdgf[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgf[i]) ) { TrueHeavierMesonCounter++; }
+					NeutralPionTagging ++;
 
-		} // End of the loop over the final state particles
+				}
+
+				if ( pdgi[i] != NeutralPionPdg && fabs(pdgi[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgi[i]) ) { TrueHeavierMesonCounter++; }
+
+			} // End of the loop over the initial state particles, because there are no final state particles in a No FSI sample
+
+
+		} else {*/
+
+			for (int i = 0; i < nf; i++) {
+
+				if (pdgf[i] == ProtonPdg && pf[i] > ArrayNBinsProtonMomentum[0]) {
+
+					ProtonTagging ++;
+					ProtonID.push_back(i);
+
+				}
+
+				if (fabs(pdgf[i]) == AbsChargedPionPdg && pf[i] > ChargedPionMomentumThres)  {
+
+					ChargedPionTagging ++;
+
+				}
+
+				if (pdgf[i] == NeutralPionPdg)  {
+
+					NeutralPionTagging ++;
+
+				}
+
+				if ( pdgf[i] != NeutralPionPdg && fabs(pdgf[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgf[i]) ) { TrueHeavierMesonCounter++; }
+
+			} // End of the loop over the final state particles
+
+		/*}*/
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -404,18 +455,26 @@ void GenieAnalysis::Loop() {
 	// Reweight the genie sample with the sum of cv tune weights / number of events
 	// Multiply by the flux integrated xsec that has been calculated using flux_averaged_total_xsec
 
-//	double ScalingFactor = 1. / (double)(SumCVWeights);
+	double ScalingFactor = 1. / (double)(SumCVWeights);
+//	double ScalingFactor = 1. / (double)(nentries);
 
-	double ScalingFactor = 1. / (double)(nentries);
+	cout << "# Events = " << nentries << endl;
+	cout << "Sum Weights = " << SumCVWeights << endl;
 
 	// -------------------------------------------------------------------------------------------------------------------------------------------
 
 	// Flux integrated cross sections
 
-	if (OutFileName == "Genie_v3_0_6_uB_Tune_1" || OutFileName == "Genie_v3_0_6_Out_Of_The_Box") { ScalingFactor = ScalingFactor * G18_10a_02_11a_FluxIntegratedXSection ; }
+	if (OutFileName == "Genie_v3_0_6_uB_Tune_1" || OutFileName == "Genie_v3_0_6_Out_Of_The_Box" || OutFileName == "Genie_v3_0_6_Nominal" 
+	 || OutFileName == "Genie_v3_0_6_NoFSI"  || OutFileName == "Genie_v3_0_6_hN2018") 
+		{ ScalingFactor = ScalingFactor * G18_10a_02_11a_FluxIntegratedXSection ; }
 	if (OutFileName == "SuSav2") { ScalingFactor = ScalingFactor * SuSav2FluxIntegratedXSection ; }
 	if (OutFileName == "GENIEv2") { ScalingFactor = ScalingFactor * R_2_12_10_FluxIntegratedXSection ; }
 	if (OutFileName == "GENIEv3_0_4") { ScalingFactor = ScalingFactor * R_3_0_4_FluxIntegratedXSection ; }
+	if (OutFileName == "Genie_v3_0_6_NoRPA") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_NoRPA_FluxIntegratedXSection ; }
+	if (OutFileName == "Genie_v3_0_6_NoCoulomb") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_NoCoulomb_FluxIntegratedXSection ; }
+	if (OutFileName == "Genie_v3_0_6_RFG") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_RFG_FluxIntegratedXSection ; }
+	if (OutFileName == "Genie_v3_0_6_EffSF") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_EffSF_FluxIntegratedXSection ; }
 
 	file->cd();
 
@@ -426,6 +485,8 @@ void GenieAnalysis::Loop() {
 	Reweight(TrueMuonMomentumPlot,ScalingFactor);
 	Reweight(TrueMuonPhiPlot,ScalingFactor);
 	Reweight(TrueMuonCosThetaPlot,ScalingFactor);
+	// Factor of 2 to account for the fact that the bin width is 2, but we want the number of events, as if the bin width is 1
+	Reweight(TrueMuonCosThetaSingleBinPlot,2*ScalingFactor);
 
 	Reweight(TrueProtonMomentumPlot,ScalingFactor);
 	Reweight(TrueProtonPhiPlot,ScalingFactor);
@@ -450,9 +511,15 @@ void GenieAnalysis::Loop() {
 	Reweight(TrueDeltaAlphaTPlot,ScalingFactor);
 	Reweight(TrueDeltaPhiTPlot,ScalingFactor);
 
-	// Reweight(TruekMissPlot,ScalingFactor);
-	// Reweight(TruePMissPlot,ScalingFactor);
-	// Reweight(TruePMissMinusPlot,ScalingFactor);
+	Reweight(TrueDeltaPLPlot,ScalingFactor);
+	Reweight(TrueDeltaPnPlot,ScalingFactor);
+	Reweight(TrueDeltaPtxPlot,ScalingFactor);
+	Reweight(TrueDeltaPtyPlot,ScalingFactor);
+	Reweight(TrueAPlot,ScalingFactor);
+
+	Reweight(TruekMissPlot,ScalingFactor);
+	Reweight(TruePMissPlot,ScalingFactor);
+	Reweight(TruePMissMinusPlot,ScalingFactor);
 
 	Reweight2D(TrueCosThetaMuPmuPlot,ScalingFactor);
 	Reweight2D(TrueCosThetaPPpPlot,ScalingFactor);
