@@ -1,5 +1,6 @@
 myFluxes/*
 archive/*
+myPlots/*
 *.root
 *.pcm
 *.d

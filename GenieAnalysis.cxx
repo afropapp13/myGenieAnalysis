@@ -38,6 +38,27 @@ void GenieAnalysis::Loop() {
 	TFile* file = new TFile(FileNameAndPath,"recreate");
 	std::cout << std::endl << std::endl;
 
+	// ---------------------------------------------------------------------------------------------------------------------------------
+
+	// Plots for reco LFG pn, kMiss & pn,proxy in slices
+	// Index 0 corresponds to all the events
+
+	TH1D* TrueLFGPnSlicePlot[NRanges+1]; 
+	TH1D* TruekMissSlicePlot[NRanges+1];
+	TH1D* TruePnProxySlicePlot[NRanges+1];
+	TH1D* TruekMissSliceNoFSIPlot[NRanges+1];
+	TH1D* TruePnProxySliceNoFSIPlot[NRanges+1];		
+
+	for (int i = 0; i < NRanges + 1; i++) {
+
+		TrueLFGPnSlicePlot[i] = new TH1D("TrueLFGPnSlicePlot_"+TString(std::to_string(i)),";p_{n} [GeV/c]",NBins,LowEdge,HighEdge);
+		TruekMissSlicePlot[i] = new TH1D("TruekMissSlicePlot_"+TString(std::to_string(i)),";p_{n} [GeV/c]",NBins,LowEdge,HighEdge);
+		TruePnProxySlicePlot[i] = new TH1D("TruePnProxySlicePlot_"+TString(std::to_string(i)),";p_{n} [GeV/c]",NBins,LowEdge,HighEdge);
+		TruekMissSliceNoFSIPlot[i] = new TH1D("TruekMissSliceNoFSIPlot_"+TString(std::to_string(i)),";p_{n} [GeV/c]",NBins,LowEdge,HighEdge);
+		TruePnProxySliceNoFSIPlot[i] = new TH1D("TruePnProxySliceNoFSIPlot_"+TString(std::to_string(i)),";p_{n} [GeV/c]",NBins,LowEdge,HighEdge);		
+
+	}
+
 	// ---------------------------------------------------------------------------------------------------------------------------------	
 
 	TH1D* TrueDeltaPTPlot = new TH1D("TrueDeltaPTPlot",LabelXAxisDeltaPT,NBinsDeltaPT,ArrayNBinsDeltaPT);
@@ -60,6 +81,9 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueProtonCosThetaPlot = new TH1D("TrueProtonCosThetaPlot",LabelXAxisProtonCosTheta,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
 
 	TH1D* TrueECalPlot = new TH1D("TrueECalPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
+	TH1D* TrueECalLowPTPlot = new TH1D("TrueECalLowPTPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
+	TH1D* TrueECalMidPTPlot = new TH1D("TrueECalMidPTPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
+	TH1D* TrueECalHighPTPlot = new TH1D("TrueECalHighPTPlot",LabelXAxisECal,NBinsECal,ArrayNBinsECal);
 	TH1D* TrueEQEPlot = new TH1D("TrueEQEPlot",LabelXAxisEQE,NBinsEQE,ArrayNBinsEQE);
 	TH1D* TrueQ2Plot = new TH1D("TrueQ2Plot",LabelXAxisQ2,NBinsQ2,ArrayNBinsQ2);
 
@@ -74,9 +98,13 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueCCQEECalPlot = new TH1D("TrueCCQEECalPlot",LabelXAxisECal,CCQENBinsECal,CCQEArrayNBinsECal);
 	TH1D* TrueCCQEQ2Plot = new TH1D("TrueCCQEQ2Plot",LabelXAxisQ2,CCQENBinsQ2,CCQEArrayNBinsQ2);	
 
-	 TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
-	 TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
-	 TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+	TH1D* TruekMissPlot = new TH1D("TruekMissPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* TruePMissMinusPlot = new TH1D("TruePMissMinusPlot",LabelXAxisPMissMinus,NBinsPMissMinus,ArrayNBinsPMissMinus);
+	TH1D* TruePMissPlot = new TH1D("TruePMissPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+
+	TH1D* TruePMissNoFSIPlot = new TH1D("TruePMissNoFSIPlot",LabelXAxisPMiss,NBinsPMiss,ArrayNBinsPMiss);
+	TH1D* TruekMissNoFSIPlot = new TH1D("TruekMissNoFSIPlot",LabelXAxiskMiss,NBinskMiss,ArrayNBinskMiss);
+	TH1D* TrueDeltaPnNoFSIPlot = new TH1D("TrueDeltaPnNoFSIPlot",LabelXAxisDeltaPn,NBinsDeltaPn,ArrayNBinsDeltaPn);	 	 	 
 
 	// For now and until box opening
 	int NBins2DAnalysis = 4;
@@ -183,70 +211,116 @@ void GenieAnalysis::Loop() {
 		// ---------------------------------------------------------------------------------------------------------------------------------
 
 		if (!cc) { continue; }
+
+		// -----------------------------------------------------------------------------------------------------------------------------------
+
+		// Muon
+
+		TVector3 Muon3Vector(pxl,pyl,pzl); // GeV
+		TLorentzVector Muon4Vector(pxl,pyl,pzl,El); // GeV
+		double MuonMomentum = pl; // GeV / c
+		double MuonTheta = TMath::ACos(cthl) * 180. / TMath::Pi(); // deg
+		double MuonCosTheta = cthl;
+		double MuonPhi = Muon4Vector.Phi() * 180. / TMath::Pi(); // deg		
+
+		// ----------------------------------------------------------------------------------------------------------------------------------
+
+		// True struck nucleon momentum (LFG / RFG et al)
+
+		double LFG_pn = TMath::Sqrt(pxn*pxn+pyn*pyn+pzn*pzn);	
+
+		int Index = -1;
+
+		for (int i = 0; i < NRanges; i++) {
+
+			// Don't forget the offste by 1, 0 corresponds to all the events
+			if (LFG_pn > range[i] && LFG_pn < range[i+1]) { Index = i+1; }
+
+		}			
 		
 		// ---------------------------------------------------------------------------------------------------------------------------------	
 
 		int ProtonTagging = 0, ChargedPionTagging = 0, NeutralPionTagging = 0, TrueHeavierMesonCounter = 0;
 		vector <int> ProtonID; ProtonID.clear();
 
-		/*if (OutFileName == "Genie_v3_0_6_NoFSI") {
+		// --------------------------------------------------------------------
 
-			for (int i = 0; i < ni; i++) {
+		// No FSI case, use initial state particles
 
-				double pi = TMath::Sqrt( TMath::Power(pxi[i],2.) + TMath::Power(pyi[i],2.) + TMath::Power(pzi[i],2.));
+		int ProtonTaggingNoFSI = 0, ChargedPionTaggingNoFSI = 0, NeutralPionTaggingNoFSI = 0, TrueHeavierMesonCounterNoFSI = 0;
+		vector <int> ProtonIDNoFSI; ProtonIDNoFSI.clear();
 
-				if (pdgi[i] == ProtonPdg && pi > ArrayNBinsProtonMomentum[0]) {
+		for (int i = 0; i < ni; i++) {
 
-					ProtonTagging ++;
-					ProtonID.push_back(i);
+			double pi = TMath::Sqrt( TMath::Power(pxi[i],2.) + TMath::Power(pyi[i],2.) + TMath::Power(pzi[i],2.));
 
-				}
+			if (pdgi[i] == ProtonPdg && pi > ArrayNBinsProtonMomentum[0]) {
 
-				if (fabs(pdgi[i]) == AbsChargedPionPdg && pi > ChargedPionMomentumThres)  {
+				ProtonTaggingNoFSI ++;
+				ProtonIDNoFSI.push_back(i);
 
-					ChargedPionTagging ++;
+			}
 
-				}
+			if (fabs(pdgi[i]) == AbsChargedPionPdg && pi > ChargedPionMomentumThres)  {
 
-				if (pdgi[i] == NeutralPionPdg)  {
+				ChargedPionTaggingNoFSI ++;
 
-					NeutralPionTagging ++;
+			}
 
-				}
+			if (pdgi[i] == NeutralPionPdg)  {
 
-				if ( pdgi[i] != NeutralPionPdg && fabs(pdgi[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgi[i]) ) { TrueHeavierMesonCounter++; }
+				NeutralPionTaggingNoFSI ++;
 
-			} // End of the loop over the initial state particles, because there are no final state particles in a No FSI sample
+			}
+
+			if ( pdgi[i] != NeutralPionPdg && fabs(pdgi[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgi[i]) ) { TrueHeavierMesonCounterNoFSI++; }
+
+		} // End of the loop over the initial state particles, because there are no final state particles in a No FSI sample
 
 
-		} else {*/
+		if ( ProtonTaggingNoFSI == 1 && ChargedPionTaggingNoFSI == 0 && NeutralPionTaggingNoFSI == 0 && TrueHeavierMesonCounterNoFSI == 0) { 
 
-			for (int i = 0; i < nf; i++) {
+			// Proton
 
-				if (pdgf[i] == ProtonPdg && pf[i] > ArrayNBinsProtonMomentum[0]) {
+			int ProtonIndexNoFSI = ProtonIDNoFSI.at(0);
+			TVector3 Proton3Vector(pxi[ProtonIndexNoFSI],pyi[ProtonIndexNoFSI],pzi[ProtonIndexNoFSI]); // GeV
+			STV_Tools stv_tool(Muon3Vector,Proton3Vector,El,Ei[ProtonIndexNoFSI]);	
 
-					ProtonTagging ++;
-					ProtonID.push_back(i);
+			TruekMissSliceNoFSIPlot[0]->Fill(stv_tool.ReturnkMiss(),weight);
+			TruePnProxySliceNoFSIPlot[0]->Fill(stv_tool.ReturnPn(),weight);
 
-				}
+			TruekMissSliceNoFSIPlot[Index]->Fill(stv_tool.ReturnkMiss(),weight);
+			TruePnProxySliceNoFSIPlot[Index]->Fill(stv_tool.ReturnPn(),weight);							
 
-				if (fabs(pdgf[i]) == AbsChargedPionPdg && pf[i] > ChargedPionMomentumThres)  {
+		}
 
-					ChargedPionTagging ++;
+		// --------------------------------------------------------------------
 
-				}
+		for (int i = 0; i < nf; i++) {
 
-				if (pdgf[i] == NeutralPionPdg)  {
+			if (pdgf[i] == ProtonPdg && pf[i] > ArrayNBinsProtonMomentum[0]) {
 
-					NeutralPionTagging ++;
+				ProtonTagging ++;
+				ProtonID.push_back(i);
 
-				}
+			}
 
-				if ( pdgf[i] != NeutralPionPdg && fabs(pdgf[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgf[i]) ) { TrueHeavierMesonCounter++; }
+			if (fabs(pdgf[i]) == AbsChargedPionPdg && pf[i] > ChargedPionMomentumThres)  {
 
-			} // End of the loop over the final state particles
+				ChargedPionTagging ++;
 
-		/*}*/
+			}
+
+			if (pdgf[i] == NeutralPionPdg)  {
+
+				NeutralPionTagging ++;
+
+			}
+
+			if ( pdgf[i] != NeutralPionPdg && fabs(pdgf[i]) != AbsChargedPionPdg && tools.is_meson_or_antimeson(pdgf[i]) ) { TrueHeavierMesonCounter++; }
+
+		} // End of the loop over the final state particles
+
 
 		// -----------------------------------------------------------------------------------------------------------------------------------
 
@@ -259,17 +333,6 @@ void GenieAnalysis::Loop() {
 
 		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 ) { continue; }
 		if ( TrueHeavierMesonCounter != 0 ) { continue; }
-
-		// -----------------------------------------------------------------------------------------------------------------------------------
-
-		// Muon
-
-		TVector3 Muon3Vector(pxl,pyl,pzl); // GeV
-		TLorentzVector Muon4Vector(pxl,pyl,pzl,El); // GeV
-		double MuonMomentum = pl; // GeV / c
-		double MuonTheta = TMath::ACos(cthl) * 180. / TMath::Pi(); // deg
-		double MuonCosTheta = cthl;
-		double MuonPhi = Muon4Vector.Phi() * 180. / TMath::Pi(); // deg
 
 		// ------------------------------------------------------------------------------------------------------------------------------------
 
@@ -327,7 +390,7 @@ void GenieAnalysis::Loop() {
 			if (		
 			    // Same events fill all the plots
 			        
-			    PTmissMomentum > ArrayNBinsDeltaPT[0] && PTmissMomentum < ArrayNBinsDeltaPT[NBinsDeltaPT]
+			    PTmissMomentum > ArrayNBinsDeltaPT[0] //&& PTmissMomentum < ArrayNBinsDeltaPT[NBinsDeltaPT]
 			    && TrueDeltaAlphaT > ArrayNBinsDeltaAlphaT[0] && TrueDeltaAlphaT < ArrayNBinsDeltaAlphaT[NBinsDeltaAlphaT]
 		 	    && TrueDeltaPhiT > ArrayNBinsDeltaPhiT[0] && TrueDeltaPhiT < ArrayNBinsDeltaPhiT[NBinsDeltaPhiT]
 		 	    
@@ -352,6 +415,9 @@ void GenieAnalysis::Loop() {
 				TrueDeltaPhiTPlot->Fill(TrueDeltaPhiT,weight);
 
 				TrueECalPlot->Fill(ECal,weight);
+				if (PTmissMomentum > LowPT[0] && PTmissMomentum < HighPT[0]) { TrueECalLowPTPlot->Fill(ECal,weight); }
+				if (PTmissMomentum > LowPT[1] && PTmissMomentum < HighPT[1]) { TrueECalMidPTPlot->Fill(ECal,weight); }
+				if (PTmissMomentum > LowPT[2] && PTmissMomentum < HighPT[2]) { TrueECalHighPTPlot->Fill(ECal,weight); }
 				TrueEQEPlot->Fill(EQE,weight);
 				TrueQ2Plot->Fill(TrueQ2,weight);
 
@@ -380,6 +446,18 @@ void GenieAnalysis::Loop() {
 				TrueDeltaPtxPlot->Fill(TruePtx,weight);
 				TrueDeltaPtyPlot->Fill(TruePty,weight);
 				TrueAPlot->Fill(TrueA,weight);
+
+				//-----------------------------------------------------------------------------------------
+
+				TrueLFGPnSlicePlot[0]->Fill(LFG_pn,weight);				
+				TruekMissSlicePlot[0]->Fill(TruekMiss,weight);
+				TruePnProxySlicePlot[0]->Fill(TruePn,weight);
+
+				TrueLFGPnSlicePlot[Index]->Fill(LFG_pn,weight);				
+				TruekMissSlicePlot[Index]->Fill(TruekMiss,weight);
+				TruePnProxySlicePlot[Index]->Fill(TruePn,weight);				
+
+				//-----------------------------------------------------------------------------------------
 
 				// 2D Analysis
 		

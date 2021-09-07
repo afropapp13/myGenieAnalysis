@@ -23,7 +23,7 @@ TString Path = "mySamples/";
 
 // uB Tune applied / weighted samples
 
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_Nominal"; TString OutFileName = "Genie_v3_0_6_Nominal"; 
+//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_Nominal"; TString OutFileName = "Genie_v3_0_6_Nominal"; // Nominal + ub Tune
 // //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_Nominal"; TString OutFileName = "Genie_v3_0_6_NoFSI";
 
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoFSI"; TString OutFileName = "Genie_v3_0_6_NoFSI";
@@ -32,14 +32,14 @@ TString Path = "mySamples/";
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoRPA"; TString OutFileName = "Genie_v3_0_6_NoRPA"; 
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoCoulomb"; TString OutFileName = "Genie_v3_0_6_NoCoulomb"; 
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_RFG"; TString OutFileName = "Genie_v3_0_6_RFG"; 
-TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_EffSF"; TString OutFileName = "Genie_v3_0_6_EffSF"; 
+//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_EffSF"; TString OutFileName = "Genie_v3_0_6_EffSF"; 
 
 // -------------------------------------------------------------------------------------------------------------------
 
 // unweighted samples
 
 //TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_uB_Tune_1"; 
-//TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_Out_Of_The_Box"; 
+TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_Out_Of_The_Box"; 
 //TString FileName = "SuSav2_argon40_CCinclMEC_BNBFlux"; TString OutFileName = "SuSav2";
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-2_12_10"; TString OutFileName = "GENIEv2"; 
 //TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_4"; TString OutFileName = "GENIEv3_0_4"; 
