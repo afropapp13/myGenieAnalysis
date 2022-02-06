@@ -13,44 +13,14 @@
 
 using namespace Constants;
 
-// Header file for the classes stored in the TTree if any.
-
-// Fixed size dimensions of array or collections stored in the TTree if any.
-
-TString Path = "mySamples/";
-
-// -------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------
-
-// uB Tune applied / weighted samples
-
-TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_Nominal"; TString OutFileName = "Genie_v3_0_6_Nominal"; // Nominal + ub Tune v2
-////TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_Nominal"; TString OutFileName = "Genie_v3_0_6_NoFSI";
-
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoFSI"; TString OutFileName = "Genie_v3_0_6_NoFSI";
-
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_hN2018"; TString OutFileName = "Genie_v3_0_6_hN2018";  
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoRPA"; TString OutFileName = "Genie_v3_0_6_NoRPA"; 
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_NoCoulomb"; TString OutFileName = "Genie_v3_0_6_NoCoulomb"; 
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_RFG"; TString OutFileName = "Genie_v3_0_6_RFG"; 
-////TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_6_EffSF"; TString OutFileName = "Genie_v3_0_6_EffSF"; 
-
-// unweighted samples
-
-//TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_uB_Tune_1"; 
-//TString FileName = "argon40_CCinclMEC_BNBFlux"; TString OutFileName = "Genie_v3_0_6_Out_Of_The_Box"; 
-//TString FileName = "SuSav2_argon40_CCinclMEC_BNBFlux"; TString OutFileName = "SuSav2";
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-2_12_10"; TString OutFileName = "GENIEv2"; 
-//TString FileName = "argon40_CCinclMEC_BNBFlux_R-3_0_4"; TString OutFileName = "GENIEv3_0_4"; 
-
-// -------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------
-
-TString Extension = "";
-
-TString FullName = Path + FileName + Extension;
+//----------------------------------------//
 
 class GenieAnalysis {
+
+private:
+	TFile* fFile;
+	TString fFileName;
+	TString fOutFileName;
 
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
@@ -246,7 +216,7 @@ public :
    TBranch        *b_sumKEf;   //!
    TBranch        *b_calresp0;   //!
 
-   GenieAnalysis(TTree *tree=0);
+   GenieAnalysis(TString File, TString Name,TTree *tree=0);
    virtual ~GenieAnalysis();
    virtual Int_t    Cut(Long64_t entry);
    virtual Int_t    GetEntry(Long64_t entry);
@@ -260,8 +230,15 @@ public :
 #endif
 
 #ifdef GenieAnalysis_cxx
-GenieAnalysis::GenieAnalysis(TTree *tree) : fChain(0) 
+GenieAnalysis::GenieAnalysis(TString File, TString Name,TTree *tree) : fChain(0) 
 {
+
+	fFileName = File;
+	fOutFileName = Name;
+	TString Path = "mySamples/";
+	TString Extension = "";
+	TString FullName = Path + fFileName + Extension;
+
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
@@ -270,6 +247,8 @@ GenieAnalysis::GenieAnalysis(TTree *tree) : fChain(0)
          f = new TFile(FullName+".root");
       }
       f->GetObject("gst",tree);
+      
+      fFile = f;
 
    }
    Init(tree);
