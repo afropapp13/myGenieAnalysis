@@ -42,6 +42,7 @@ void GenieAnalysis::Loop() {
 
 	TString FileNameAndPath = "OutputFiles/STVAnalysis_"+fOutFileName+".root";
 	TFile* file = new TFile(FileNameAndPath,"recreate");
+	std::cout << "File " << FileNameAndPath +" to be created" << std::endl;	
 	std::cout << std::endl << std::endl;
 
 	//----------------------------------------//
@@ -68,6 +69,10 @@ void GenieAnalysis::Loop() {
 	//----------------------------------------//
 
 	// 1D analysis
+
+	TH1D* TrueVertexXPlot[NInte];
+	TH1D* TrueVertexYPlot[NInte];
+	TH1D* TrueVertexZPlot[NInte];	
 
 	TH1D* TrueDeltaPTPlot[NInte];
 	TH1D* TrueDeltaAlphaTPlot[NInte];
@@ -119,12 +124,15 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueDeltaPtx_InDeltaPtyTwoDPlot[NInte][TwoDNBinsDeltaPty];	
 	TH1D* TrueECal_InDeltaAlphaTTwoDPlot[NInte][TwoDNBinsDeltaAlphaT];	
 	TH1D* TrueECal_InDeltaPTTwoDPlot[NInte][TwoDNBinsDeltaPT];
+	TH1D* TrueECal_InDeltaPtxTwoDPlot[NInte][TwoDNBinsDeltaPtx];
+	TH1D* TrueECal_InDeltaPtyTwoDPlot[NInte][TwoDNBinsDeltaPty];		
 
 	//--------------------------------------------------//	
 
 	// 3D analysis (uncorrelated)	
 
 	TH1D* TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[NInte][TwoDNBinsDeltaPT][TwoDNBinsDeltaAlphaT];
+	TH1D* TrueECal_InDeltaPtxDeltaPtyTwoDPlot[NInte][TwoDNBinsDeltaPT][TwoDNBinsDeltaAlphaT];	
 	TH1D* TrueECal_InMuonCosThetaMuonMomentumTwoDPlot[NInte][TwoDNBinsMuonCosTheta][TwoDNBinsMuonMomentum];
 	TH1D* TrueECal_InProtonCosThetaProtonMomentumTwoDPlot[NInte][TwoDNBinsProtonCosTheta][TwoDNBinsProtonMomentum];	
 
@@ -147,6 +155,8 @@ void GenieAnalysis::Loop() {
 	TH1D* SerialTrueDeltaPty_InDeltaPtxPlot[NInte];
 	TH1D* SerialTrueDeltaPtx_InDeltaPtyPlot[NInte];
 	TH1D* SerialTrueECal_InDeltaPTPlot[NInte];
+	TH1D* SerialTrueECal_InDeltaPtxPlot[NInte];
+	TH1D* SerialTrueECal_InDeltaPtyPlot[NInte];		
 	TH1D* SerialTrueECal_InDeltaAlphaTPlot[NInte];
 
 	//--------------------------------------------------//	
@@ -154,6 +164,7 @@ void GenieAnalysis::Loop() {
 	// 3D analysis in 1D grid		
 	
 	TH1D* SerialTrueECal_InDeltaPTDeltaAlphaTPlot[NInte];
+	TH1D* SerialTrueECal_InDeltaPtxDeltaPtyPlot[NInte];	
 	TH1D* SerialTrueECal_InMuonCosThetaMuonMomentumPlot[NInte];
 	TH1D* SerialTrueECal_InProtonCosThetaProtonMomentumPlot[NInte];
 
@@ -167,6 +178,10 @@ void GenieAnalysis::Loop() {
 
 		// 1D analysis
 
+		TrueVertexXPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueVertexXPlot",RecoLabelXAxisVertexX,NBinsVertexX,MinVertexX,MaxVertexX);
+		TrueVertexYPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueVertexYPlot",RecoLabelXAxisVertexY,NBinsVertexY,MinVertexY,MaxVertexY);
+		TrueVertexZPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueVertexZPlot",RecoLabelXAxisVertexZ,NBinsVertexZ,MinVertexZ,MaxVertexZ);		
+
 		TrueDeltaPTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPTPlot",LabelXAxisDeltaPT,NBinsDeltaPT,ArrayNBinsDeltaPT);
 		TrueDeltaAlphaTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaAlphaTPlot",LabelXAxisDeltaAlphaT,NBinsDeltaAlphaT,ArrayNBinsDeltaAlphaT);
 		TrueDeltaPhiTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPhiTPlot",LabelXAxisDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);
@@ -178,7 +193,7 @@ void GenieAnalysis::Loop() {
 		TrueMuonMomentumPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueMuonMomentumPlot",LabelXAxisMuonMomentum,NBinsMuonMomentum,ArrayNBinsMuonMomentum);
 		TrueMuonPhiPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueMuonPhiPlot",LabelXAxisMuonPhi,NBinsMuonPhi,ArrayNBinsMuonPhi);
 		TrueMuonCosThetaPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaPlot",LabelXAxisMuonCosTheta,NBinsMuonCosTheta,ArrayNBinsMuonCosTheta);
-		TrueMuonCosThetaSingleBinPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaSingleBinPlot",LabelXAxisMuonCosTheta,1,-1.,1.);
+		TrueMuonCosThetaSingleBinPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueMuonCosThetaSingleBinPlot",LabelXAxisMuonCosTheta,1,0.,1.);
 		TrueProtonMomentumPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueProtonMomentumPlot",LabelXAxisProtonMomentum,NBinsProtonMomentum,ArrayNBinsProtonMomentum);
 		TrueProtonPhiPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueProtonPhiPlot",LabelXAxisProtonPhi,NBinsProtonPhi,ArrayNBinsProtonPhi);
 		TrueProtonCosThetaPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueProtonCosThetaPlot",LabelXAxisProtonCosTheta,NBinsProtonCosTheta,ArrayNBinsProtonCosTheta);
@@ -274,12 +289,25 @@ void GenieAnalysis::Loop() {
 			TString DeltaPtyTwoDInDeltaPtxLabel = "DeltaPty_DeltaPtx_"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx+1])+"Plot";			
 			TrueDeltaPty_InDeltaPtxTwoDPlot[inte][WhichDeltaPtx] = new TH1D(InteractionLabels[inte]+"True"+DeltaPtyTwoDInDeltaPtxLabel,LabelXAxisDeltaPty,NBinsDeltaPty,ArrayNBinsDeltaPty);	
 
+			TString ECalTwoDInDeltaPtxLabel = "ECal_DeltaPtx_"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx+1])+"Plot";			
+			TrueECal_InDeltaPtxTwoDPlot[inte][WhichDeltaPtx] = new TH1D(InteractionLabels[inte]+"True"+ECalTwoDInDeltaPtxLabel,LabelXAxisECal,TwoDArrayNBinsECalInDeltaPtxSlices[WhichDeltaPtx].size()-1,&TwoDArrayNBinsECalInDeltaPtxSlices[WhichDeltaPtx][0]);
+
+			for (int WhichDeltaPty = 0; WhichDeltaPty < TwoDNBinsDeltaPty; WhichDeltaPty++) {	
+
+				TString ECalTwoDInDeltaPtxDeltaPtyLabel = "ECal_DeltaPtx_"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPtx[WhichDeltaPtx+1])+"_DeltaPty_"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty+1])+"Plot";
+				TrueECal_InDeltaPtxDeltaPtyTwoDPlot[inte][WhichDeltaPtx][WhichDeltaPty] = new TH1D(InteractionLabels[inte]+"True"+ECalTwoDInDeltaPtxDeltaPtyLabel,LabelXAxisECal,TwoDArrayNBinsECalInDeltaPtxDeltaPtySlices[WhichDeltaPtx][WhichDeltaPty].size()-1,&TwoDArrayNBinsECalInDeltaPtxDeltaPtySlices[WhichDeltaPtx][WhichDeltaPty][0]);
+
+			}
+
 		}	
 
 		for (int WhichDeltaPty = 0; WhichDeltaPty < TwoDNBinsDeltaPty; WhichDeltaPty++) {
 
 			TString DeltaPtxTwoDInDeltaPtyLabel = "DeltaPtx_DeltaPty_"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty+1])+"Plot";			
 			TrueDeltaPtx_InDeltaPtyTwoDPlot[inte][WhichDeltaPty] = new TH1D(InteractionLabels[inte]+"True"+DeltaPtxTwoDInDeltaPtyLabel,LabelXAxisDeltaPtx,NBinsDeltaPtx,ArrayNBinsDeltaPtx);	
+
+			TString ECalTwoDInDeltaPtyLabel = "ECal_DeltaPty_"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty])+"To"+tools.ConvertToString(TwoDArrayNBinsDeltaPty[WhichDeltaPty+1])+"Plot";			
+			TrueECal_InDeltaPtyTwoDPlot[inte][WhichDeltaPty] = new TH1D(InteractionLabels[inte]+"True"+ECalTwoDInDeltaPtyLabel,LabelXAxisECal,TwoDArrayNBinsECalInDeltaPtySlices[WhichDeltaPty].size()-1,&TwoDArrayNBinsECalInDeltaPtySlices[WhichDeltaPty][0]);
 
 		}		
 
@@ -315,6 +343,8 @@ void GenieAnalysis::Loop() {
 		SerialTrueDeltaPty_InDeltaPtxPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialDeltaPty_DeltaPtxPlot",LabelXAxisDeltaPty,tools.Return2DNBins(TwoDArrayNBinsDeltaPtyInDeltaPtxSlices),&tools.Return2DBinIndices(TwoDArrayNBinsDeltaPtyInDeltaPtxSlices)[0]);
 		SerialTrueDeltaPtx_InDeltaPtyPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialDeltaPtx_DeltaPtyPlot",LabelXAxisDeltaPtx,tools.Return2DNBins(TwoDArrayNBinsDeltaPtxInDeltaPtySlices),&tools.Return2DBinIndices(TwoDArrayNBinsDeltaPtxInDeltaPtySlices)[0]);
 		SerialTrueECal_InDeltaPTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaPTPlot",LabelXAxisECal,tools.Return2DNBins(TwoDArrayNBinsECalInDeltaPTSlices),&tools.Return2DBinIndices(TwoDArrayNBinsECalInDeltaPTSlices)[0]);
+		SerialTrueECal_InDeltaPtxPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaPtxPlot",LabelXAxisECal,tools.Return2DNBins(TwoDArrayNBinsECalInDeltaPtxSlices),&tools.Return2DBinIndices(TwoDArrayNBinsECalInDeltaPtxSlices)[0]);
+		SerialTrueECal_InDeltaPtyPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaPtyPlot",LabelXAxisECal,tools.Return2DNBins(TwoDArrayNBinsECalInDeltaPtySlices),&tools.Return2DBinIndices(TwoDArrayNBinsECalInDeltaPtySlices)[0]);				
 		SerialTrueECal_InDeltaAlphaTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaAlphaTPlot",LabelXAxisECal,tools.Return2DNBins(TwoDArrayNBinsECalInDeltaAlphaTSlices),&tools.Return2DBinIndices(TwoDArrayNBinsECalInDeltaAlphaTSlices)[0]);
 
 		//--------------------------------------------------//	
@@ -322,6 +352,7 @@ void GenieAnalysis::Loop() {
 		// 3D analysis in 1D grid		
 		
 		SerialTrueECal_InDeltaPTDeltaAlphaTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaPTDeltaAlphaTPlot",LabelXAxisECal,tools.Return3DNBins(TwoDArrayNBinsECalInDeltaPTDeltaAlphaTSlices),&tools.Return3DBinIndices(TwoDArrayNBinsECalInDeltaPTDeltaAlphaTSlices)[0]);
+		SerialTrueECal_InDeltaPtxDeltaPtyPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_DeltaPtxDeltaPtyPlot",LabelXAxisECal,tools.Return3DNBins(TwoDArrayNBinsECalInDeltaPtxDeltaPtySlices),&tools.Return3DBinIndices(TwoDArrayNBinsECalInDeltaPtxDeltaPtySlices)[0]);		
 		SerialTrueECal_InMuonCosThetaMuonMomentumPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_MuonCosThetaMuonMomentumPlot",LabelXAxisECal,tools.Return3DNBins(TwoDArrayNBinsECalInMuonCosThetaMuonMomentumSlices),&tools.Return3DBinIndices(TwoDArrayNBinsECalInMuonCosThetaMuonMomentumSlices)[0]);
 		SerialTrueECal_InProtonCosThetaProtonMomentumPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueSerialECal_ProtonCosThetaProtonMomentumPlot",LabelXAxisECal,tools.Return3DNBins(TwoDArrayNBinsECalInProtonCosThetaProtonMomentumSlices),&tools.Return3DBinIndices(TwoDArrayNBinsECalInProtonCosThetaProtonMomentumSlices)[0]);
 
@@ -419,7 +450,6 @@ void GenieAnalysis::Loop() {
 		// True struck nucleon momentum (LFG / RFG et al)
 
 		double LFG_pn = TMath::Sqrt(pxn*pxn+pyn*pyn+pzn*pzn);	
-
 		int Index = -1;
 
 		for (int i = 0; i < NRanges; i++) {
@@ -468,6 +498,9 @@ void GenieAnalysis::Loop() {
 
 		} // End of the loop over the initial state particles, because there are no final state particles in a No FSI sample
 
+		//--------------------------------------------------//
+
+		// No FSI case		
 
 		if ( ProtonTaggingNoFSI == 1 && ChargedPionTaggingNoFSI == 0 && NeutralPionTaggingNoFSI == 0 && TrueHeavierMesonCounterNoFSI == 0) { 
 
@@ -484,6 +517,9 @@ void GenieAnalysis::Loop() {
 			TruePnProxySliceNoFSIPlot[Index]->Fill(stv_tool.ReturnPn(),weight);							
 
 		}
+
+		if (fOutFileName == "Genie_v3_0_6_NoFSI" && !(ProtonTaggingNoFSI == 1 && ChargedPionTaggingNoFSI == 0 && NeutralPionTaggingNoFSI == 0 && TrueHeavierMesonCounterNoFSI == 0) ) 
+			{ continue; }
 
 		//--------------------------------------------------//
 
@@ -512,7 +548,6 @@ void GenieAnalysis::Loop() {
 
 		} // End of the loop over the final state particles
 
-
 		//--------------------------------------------------//
 
 		// Impose signal
@@ -522,19 +557,52 @@ void GenieAnalysis::Loop() {
 		// no neutral pions of any momenta
 		// any number of neutrons & photons
 
-		if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 ) { continue; }
-		if ( TrueHeavierMesonCounter != 0 ) { continue; }
+		if (fOutFileName != "Genie_v3_0_6_NoFSI") {
+
+			if ( ProtonTagging != 1 || ChargedPionTagging != 0 || NeutralPionTagging != 0 ) { continue; }
+			if ( TrueHeavierMesonCounter != 0 ) { continue; }
+
+		}
 
 		//--------------------------------------------------//
 
 		// Proton
 
-		int ProtonIndex = ProtonID.at(0);
-		TVector3 Proton3Vector(pxf[ProtonIndex],pyf[ProtonIndex],pzf[ProtonIndex]); // GeV
-		TLorentzVector Proton4Vector(pxf[ProtonIndex],pyf[ProtonIndex],pzf[ProtonIndex],Ef[ProtonIndex]); // GeV
-		double ProtonMomentum = pf[ProtonIndex]; // GeV / c
-//		double ProtonTheta = TMath::ACos(cthf[ProtonIndex]) * 180. / TMath::Pi(); // deg
-		double ProtonCosTheta = cthf[ProtonIndex];
+		int ProtonIndex = -1;
+		TVector3 Proton3Vector(1.,1.,1.); // GeV
+		TLorentzVector Proton4Vector(1.,1.,1.,1.); // GeV
+
+		if (fOutFileName == "Genie_v3_0_6_NoFSI") {
+
+			ProtonIndex = ProtonIDNoFSI.at(0);
+
+			Proton3Vector.SetX(pxi[ProtonIndex]); // GeV/c
+			Proton3Vector.SetY(pyi[ProtonIndex]); // GeV/c	
+			Proton3Vector.SetZ(pzi[ProtonIndex]); // GeV/c					
+
+			Proton4Vector.SetX(pxi[ProtonIndex]); // GeV/c
+			Proton4Vector.SetY(pyi[ProtonIndex]); // GeV/c	
+			Proton4Vector.SetZ(pzi[ProtonIndex]); // GeV/c	
+			Proton4Vector.SetZ(Ei[ProtonIndex]);  // GeV				
+
+		} else {
+
+			ProtonIndex = ProtonID.at(0);
+
+			Proton3Vector.SetX(pxf[ProtonIndex]); // GeV/c
+			Proton3Vector.SetY(pyf[ProtonIndex]); // GeV/c	
+			Proton3Vector.SetZ(pzf[ProtonIndex]); // GeV/c
+
+			Proton4Vector.SetX(pxf[ProtonIndex]); // GeV/c
+			Proton4Vector.SetY(pyf[ProtonIndex]); // GeV/c	
+			Proton4Vector.SetZ(pzf[ProtonIndex]); // GeV/c	
+			Proton4Vector.SetZ(Ef[ProtonIndex]);  // GeV
+
+		}	
+
+
+		double ProtonMomentum = Proton3Vector.Mag(); // GeV / c
+		double ProtonCosTheta = Proton3Vector.CosTheta();
 		double ProtonPhi = Proton4Vector.Phi() * 180. / TMath::Pi(); // deg
 		double ProtonE = Proton4Vector.E(); // GeV
 
@@ -670,6 +738,17 @@ void GenieAnalysis::Loop() {
 
 				//----------------------------------------//
 
+				// True Vertex
+
+				TRandom* rd = new TRandom();
+				double Vx = rd->Uniform(MinVertexX,MaxVertexX);
+				double Vy = rd->Uniform(MinVertexY,MaxVertexY);	
+				double Vz = rd->Uniform(MinVertexZ,MaxVertexZ);							
+
+				TVector3 TrueVertex( Vx, Vy, Vz);				
+
+				//----------------------------------------//
+
 				// Indices for 2D analysis
 
 				int DeltaPTTwoDIndex = tools.ReturnIndex(PTmissMomentum, TwoDArrayNBinsDeltaPT);
@@ -688,7 +767,9 @@ void GenieAnalysis::Loop() {
 				int SerialDeltaAlphaTInDeltaPTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsDeltaAlphaTInDeltaPTSlices,DeltaPTTwoDIndex,TrueDeltaAlphaT);
 				int SerialDeltaPhiTInDeltaPTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsDeltaPhiTInDeltaPTSlices,DeltaPTTwoDIndex,TrueDeltaPhiT);
 				int SerialDeltaPnInDeltaPTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsDeltaPnInDeltaPTSlices,DeltaPTTwoDIndex,TruePn);	
-				int SerialECalInDeltaPTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsECalInDeltaPTSlices,DeltaPTTwoDIndex,ECal);															
+				int SerialECalInDeltaPTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsECalInDeltaPTSlices,DeltaPTTwoDIndex,ECal);
+				int SerialECalInDeltaPtxIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsECalInDeltaPtxSlices,DeltaPtxTwoDIndex,ECal);				
+				int SerialECalInDeltaPtyIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsECalInDeltaPtySlices,DeltaPtyTwoDIndex,ECal);												
 				int SerialECalInDeltaAlphaTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsECalInDeltaAlphaTSlices,DeltaAlphaTTwoDIndex,ECal);
 				int SerialProtonCosThetaInMuonCosThetaIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsProtonCosThetaInMuonCosThetaSlices,MuonCosThetaTwoDIndex,ProtonCosTheta);
 				int SerialDeltaPtyInDeltaPtxIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsDeltaPtyInDeltaPtxSlices,DeltaPtxTwoDIndex,TruePty);				
@@ -699,6 +780,7 @@ void GenieAnalysis::Loop() {
 				int SerialDeltaPnInDeltaAlphaTIndex = tools.ReturnIndexIn2DList(TwoDArrayNBinsDeltaPnInDeltaAlphaTSlices,DeltaAlphaTTwoDIndex,TruePn);				
 
 				int SerialECalInDeltaPTDeltaAlphaTIndex = tools.ReturnIndexIn3DList(TwoDArrayNBinsECalInDeltaPTDeltaAlphaTSlices,DeltaPTTwoDIndex,DeltaAlphaTTwoDIndex,ECal);
+				int SerialECalInDeltaPtxDeltaPtyIndex = tools.ReturnIndexIn3DList(TwoDArrayNBinsECalInDeltaPtxDeltaPtySlices,DeltaPtxTwoDIndex,DeltaPtyTwoDIndex,ECal);				
 				int SerialECalInMuonCosThetaMuonMomentumIndex = tools.ReturnIndexIn3DList(TwoDArrayNBinsECalInMuonCosThetaMuonMomentumSlices,MuonCosThetaTwoDIndex,MuonMomentumTwoDIndex,ECal);
 				int SerialECalInProtonCosThetaProtonMomentumIndex = tools.ReturnIndexIn3DList(TwoDArrayNBinsECalInProtonCosThetaProtonMomentumSlices,ProtonCosThetaTwoDIndex,ProtonMomentumTwoDIndex,ECal);																																																									
 
@@ -716,6 +798,10 @@ void GenieAnalysis::Loop() {
 
 				// 1D analysis
 
+				TrueVertexXPlot[0]->Fill(TrueVertex.X(),weight);
+				TrueVertexYPlot[0]->Fill(TrueVertex.Y(),weight);
+				TrueVertexZPlot[0]->Fill(TrueVertex.Z(),weight);				
+
 				TrueDeltaPTPlot[0]->Fill(PTmissMomentum,weight);
 				TrueDeltaAlphaTPlot[0]->Fill(TrueDeltaAlphaT,weight);
 				TrueDeltaPhiTPlot[0]->Fill(TrueDeltaPhiT,weight);
@@ -725,7 +811,7 @@ void GenieAnalysis::Loop() {
 				TrueMuonMomentumPlot[0]->Fill(MuonMomentum,weight);
 				TrueMuonPhiPlot[0]->Fill(MuonPhi,weight);
 				TrueMuonCosThetaPlot[0]->Fill(MuonCosTheta,weight);
-				TrueMuonCosThetaSingleBinPlot[0]->Fill(MuonCosTheta,weight);
+				TrueMuonCosThetaSingleBinPlot[0]->Fill(0.5,weight);
 				TrueProtonMomentumPlot[0]->Fill(ProtonMomentum,weight);
 				TrueProtonPhiPlot[0]->Fill(ProtonPhi,weight);
 				TrueProtonCosThetaPlot[0]->Fill(ProtonCosTheta,weight);			
@@ -738,6 +824,10 @@ void GenieAnalysis::Loop() {
 				TrueDeltaPtyPlot[0]->Fill(TruePty,weight);
 				TrueAPlot[0]->Fill(TrueA,weight);
 
+				TrueVertexXPlot[genie_mode]->Fill(TrueVertex.X(),weight);
+				TrueVertexYPlot[genie_mode]->Fill(TrueVertex.Y(),weight);
+				TrueVertexZPlot[genie_mode]->Fill(TrueVertex.Z(),weight);
+
 				TrueDeltaPTPlot[genie_mode]->Fill(PTmissMomentum,weight);
 				TrueDeltaAlphaTPlot[genie_mode]->Fill(TrueDeltaAlphaT,weight);
 				TrueDeltaPhiTPlot[genie_mode]->Fill(TrueDeltaPhiT,weight);
@@ -747,7 +837,7 @@ void GenieAnalysis::Loop() {
 				TrueMuonMomentumPlot[genie_mode]->Fill(MuonMomentum,weight);
 				TrueMuonPhiPlot[genie_mode]->Fill(MuonPhi,weight);
 				TrueMuonCosThetaPlot[genie_mode]->Fill(MuonCosTheta,weight);
-				TrueMuonCosThetaSingleBinPlot[genie_mode]->Fill(MuonCosTheta,weight);
+				TrueMuonCosThetaSingleBinPlot[genie_mode]->Fill(0.5,weight);
 				TrueProtonMomentumPlot[genie_mode]->Fill(ProtonMomentum,weight);
 				TrueProtonPhiPlot[genie_mode]->Fill(ProtonPhi,weight);
 				TrueProtonCosThetaPlot[genie_mode]->Fill(ProtonCosTheta,weight);			
@@ -780,6 +870,8 @@ void GenieAnalysis::Loop() {
 				TrueDeltaPn_InDeltaAlphaTTwoDPlot[0][DeltaAlphaTTwoDIndex]->Fill(TruePn,weight);				
 				TrueECal_InDeltaAlphaTTwoDPlot[0][DeltaAlphaTTwoDIndex]->Fill(ECal,weight);
 				TrueECal_InDeltaPTTwoDPlot[0][DeltaPTTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtxTwoDPlot[0][DeltaPtxTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtyTwoDPlot[0][DeltaPtyTwoDIndex]->Fill(ECal,weight);								
 
 				TrueDeltaAlphaT_InDeltaPTTwoDPlot[genie_mode][DeltaPTTwoDIndex]->Fill(TrueDeltaAlphaT,weight);
 				TrueDeltaPhiT_InDeltaPTTwoDPlot[genie_mode][DeltaPTTwoDIndex]->Fill(TrueDeltaPhiT,weight);	
@@ -797,16 +889,20 @@ void GenieAnalysis::Loop() {
 				TrueDeltaPn_InDeltaAlphaTTwoDPlot[genie_mode][DeltaAlphaTTwoDIndex]->Fill(TruePn,weight);				
 				TrueECal_InDeltaAlphaTTwoDPlot[genie_mode][DeltaAlphaTTwoDIndex]->Fill(ECal,weight);
 				TrueECal_InDeltaPTTwoDPlot[genie_mode][DeltaPTTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtxTwoDPlot[genie_mode][DeltaPtxTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtyTwoDPlot[genie_mode][DeltaPtyTwoDIndex]->Fill(ECal,weight);				
 
 				//----------------------------------------//
 
 				// 3D analysis (uncorrelated)
 
 				TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[0][DeltaPTTwoDIndex][DeltaAlphaTTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtxDeltaPtyTwoDPlot[0][DeltaPtxTwoDIndex][DeltaPtyTwoDIndex]->Fill(ECal,weight);				
 				TrueECal_InMuonCosThetaMuonMomentumTwoDPlot[0][MuonCosThetaTwoDIndex][MuonMomentumTwoDIndex]->Fill(ECal,weight);
 				TrueECal_InProtonCosThetaProtonMomentumTwoDPlot[0][ProtonCosThetaTwoDIndex][ProtonMomentumTwoDIndex]->Fill(ECal,weight);
 
 				TrueECal_InDeltaPTDeltaAlphaTTwoDPlot[genie_mode][DeltaPTTwoDIndex][DeltaAlphaTTwoDIndex]->Fill(ECal,weight);
+				TrueECal_InDeltaPtxDeltaPtyTwoDPlot[genie_mode][DeltaPtxTwoDIndex][DeltaPtyTwoDIndex]->Fill(ECal,weight);				
 				TrueECal_InMuonCosThetaMuonMomentumTwoDPlot[genie_mode][MuonCosThetaTwoDIndex][MuonMomentumTwoDIndex]->Fill(ECal,weight);
 				TrueECal_InProtonCosThetaProtonMomentumTwoDPlot[genie_mode][ProtonCosThetaTwoDIndex][ProtonMomentumTwoDIndex]->Fill(ECal,weight);									
 
@@ -821,7 +917,9 @@ void GenieAnalysis::Loop() {
 				SerialTrueDeltaAlphaT_InDeltaPTPlot[0]->Fill(SerialDeltaAlphaTInDeltaPTIndex,weight);
 				SerialTrueDeltaPhiT_InDeltaPTPlot[0]->Fill(SerialDeltaPhiTInDeltaPTIndex,weight);
 				SerialTrueDeltaPn_InDeltaPTPlot[0]->Fill(SerialDeltaPnInDeltaPTIndex,weight);	
-				SerialTrueECal_InDeltaPTPlot[0]->Fill(SerialECalInDeltaPTIndex,weight);																							
+				SerialTrueECal_InDeltaPTPlot[0]->Fill(SerialECalInDeltaPTIndex,weight);
+				SerialTrueECal_InDeltaPtxPlot[0]->Fill(SerialECalInDeltaPtxIndex,weight);
+				SerialTrueECal_InDeltaPtyPlot[0]->Fill(SerialECalInDeltaPtyIndex,weight);																															
 				SerialTrueProtonCosTheta_InMuonCosThetaPlot[0]->Fill(SerialProtonCosThetaInMuonCosThetaIndex,weight);
 				SerialTrueDeltaPty_InDeltaPtxPlot[0]->Fill(SerialDeltaPtyInDeltaPtxIndex,weight);
 				SerialTrueDeltaPtx_InDeltaPtyPlot[0]->Fill(SerialDeltaPtxInDeltaPtyIndex,weight);	
@@ -838,7 +936,9 @@ void GenieAnalysis::Loop() {
 				SerialTrueDeltaAlphaT_InDeltaPTPlot[genie_mode]->Fill(SerialDeltaAlphaTInDeltaPTIndex,weight);
 				SerialTrueDeltaPhiT_InDeltaPTPlot[genie_mode]->Fill(SerialDeltaPhiTInDeltaPTIndex,weight);
 				SerialTrueDeltaPn_InDeltaPTPlot[genie_mode]->Fill(SerialDeltaPnInDeltaPTIndex,weight);	
-				SerialTrueECal_InDeltaPTPlot[genie_mode]->Fill(SerialECalInDeltaPTIndex,weight);																							
+				SerialTrueECal_InDeltaPTPlot[genie_mode]->Fill(SerialECalInDeltaPTIndex,weight);
+				SerialTrueECal_InDeltaPtxPlot[genie_mode]->Fill(SerialECalInDeltaPtxIndex,weight);
+				SerialTrueECal_InDeltaPtyPlot[genie_mode]->Fill(SerialECalInDeltaPtyIndex,weight);																											
 				SerialTrueProtonCosTheta_InMuonCosThetaPlot[genie_mode]->Fill(SerialProtonCosThetaInMuonCosThetaIndex,weight);
 				SerialTrueDeltaPty_InDeltaPtxPlot[genie_mode]->Fill(SerialDeltaPtyInDeltaPtxIndex,weight);
 				SerialTrueDeltaPtx_InDeltaPtyPlot[genie_mode]->Fill(SerialDeltaPtxInDeltaPtyIndex,weight);	
@@ -853,10 +953,12 @@ void GenieAnalysis::Loop() {
 				// 3D analysis treated in 1D grid
 
 				SerialTrueECal_InDeltaPTDeltaAlphaTPlot[0]->Fill(SerialECalInDeltaPTDeltaAlphaTIndex,weight);
+				SerialTrueECal_InDeltaPtxDeltaPtyPlot[0]->Fill(SerialECalInDeltaPtxDeltaPtyIndex,weight);				
 				SerialTrueECal_InMuonCosThetaMuonMomentumPlot[0]->Fill(SerialECalInMuonCosThetaMuonMomentumIndex,weight);
 				SerialTrueECal_InProtonCosThetaProtonMomentumPlot[0]->Fill(SerialECalInProtonCosThetaProtonMomentumIndex,weight);
 
 				SerialTrueECal_InDeltaPTDeltaAlphaTPlot[genie_mode]->Fill(SerialECalInDeltaPTDeltaAlphaTIndex,weight);
+				SerialTrueECal_InDeltaPtxDeltaPtyPlot[genie_mode]->Fill(SerialECalInDeltaPtxDeltaPtyIndex,weight);				
 				SerialTrueECal_InMuonCosThetaMuonMomentumPlot[genie_mode]->Fill(SerialECalInMuonCosThetaMuonMomentumIndex,weight);
 				SerialTrueECal_InProtonCosThetaProtonMomentumPlot[genie_mode]->Fill(SerialECalInProtonCosThetaProtonMomentumIndex,weight);								
 
@@ -951,8 +1053,11 @@ void GenieAnalysis::Loop() {
 	if (fOutFileName == "Genie_v3_0_6_uB_Tune_1" || fOutFileName == "Genie_v3_0_6_Out_Of_The_Box" || fOutFileName == "Genie_v3_0_6_Nominal" 
 	 || fOutFileName == "Genie_v3_0_6_NoFSI"  || fOutFileName == "Genie_v3_0_6_hN2018") 
 		{ ScalingFactor = ScalingFactor * G18_10a_02_11a_FluxIntegratedXSection ; }
-	if (fOutFileName == "SuSav2") { ScalingFactor = ScalingFactor * SuSav2FluxIntegratedXSection ; }
+	if (fOutFileName == "SuSav2" || fOutFileName == "G21hA" || fOutFileName == "G21G4" || fOutFileName == "G21NoFSI") 
+		{ ScalingFactor = ScalingFactor * SuSav2FluxIntegratedXSection ; }
 	if (fOutFileName == "GENIEv2") { ScalingFactor = ScalingFactor * R_2_12_10_FluxIntegratedXSection ; }
+	if (fOutFileName == "GENIEv2LFG") { ScalingFactor = ScalingFactor * R_2_12_10_LFG_FluxIntegratedXSection ; }
+	if (fOutFileName == "GENIEv2EffSF") { ScalingFactor = ScalingFactor * R_2_12_10_EffSF_FluxIntegratedXSection ; }		
 	if (fOutFileName == "GENIEv3_0_4") { ScalingFactor = ScalingFactor * R_3_0_4_FluxIntegratedXSection ; }
 	if (fOutFileName == "Genie_v3_0_6_NoRPA") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_NoRPA_FluxIntegratedXSection ; }
 	if (fOutFileName == "Genie_v3_0_6_NoCoulomb") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_NoCoulomb_FluxIntegratedXSection ; }
@@ -976,7 +1081,7 @@ void GenieAnalysis::Loop() {
 		tools.Reweight(TrueMuonMomentumPlot[inte],ScalingFactor);
 		tools.Reweight(TrueMuonPhiPlot[inte],ScalingFactor);
 		tools.Reweight(TrueMuonCosThetaPlot[inte],ScalingFactor);
-		tools.Reweight(TrueMuonCosThetaSingleBinPlot[inte],2*ScalingFactor); // Factor of 2 to account for the fact that the bin width is 2, but we want the number of events, as if the bin width is 1
+		tools.Reweight(TrueMuonCosThetaSingleBinPlot[inte],ScalingFactor);
 		tools.Reweight(TrueProtonMomentumPlot[inte],ScalingFactor);
 		tools.Reweight(TrueProtonPhiPlot[inte],ScalingFactor);
 		tools.Reweight(TrueProtonCosThetaPlot[inte],ScalingFactor);
@@ -1002,6 +1107,9 @@ void GenieAnalysis::Loop() {
 		tools.Reweight(TruekMissPlot[inte],ScalingFactor);
 		tools.Reweight(TruePMissPlot[inte],ScalingFactor);
 		tools.Reweight(TruePMissMinusPlot[inte],ScalingFactor);
+		tools.Reweight(TrueVertexXPlot[inte],ScalingFactor);
+		tools.Reweight(TrueVertexYPlot[inte],ScalingFactor);				
+		tools.Reweight(TrueVertexZPlot[inte],ScalingFactor);	
 
 		//----------------------------------------//
 
@@ -1062,12 +1170,20 @@ void GenieAnalysis::Loop() {
 		for (int WhichDeltaPtx = 0; WhichDeltaPtx < TwoDNBinsDeltaPtx; WhichDeltaPtx++) {
 
 			tools.Reweight(TrueDeltaPty_InDeltaPtxTwoDPlot[inte][WhichDeltaPtx],ScalingFactor);	
+			tools.Reweight(TrueECal_InDeltaPtxTwoDPlot[inte][WhichDeltaPtx],ScalingFactor);	
+
+			for (int WhichDeltaPty = 0; WhichDeltaPty < TwoDNBinsDeltaPty; WhichDeltaPty++) {	
+
+						tools.Reweight(TrueECal_InDeltaPtxDeltaPtyTwoDPlot[inte][WhichDeltaPtx][WhichDeltaPty],ScalingFactor);
+
+			}					
 
 		}
 
 		for (int WhichDeltaPty = 0; WhichDeltaPty < TwoDNBinsDeltaPty; WhichDeltaPty++) {
 
 			tools.Reweight(TrueDeltaPtx_InDeltaPtyTwoDPlot[inte][WhichDeltaPty],ScalingFactor);	
+			tools.Reweight(TrueECal_InDeltaPtyTwoDPlot[inte][WhichDeltaPty],ScalingFactor);			
 
 		}		
 
@@ -1090,9 +1206,12 @@ void GenieAnalysis::Loop() {
 		tools.Reweight(SerialTrueDeltaPty_InDeltaPtxPlot[inte],ScalingFactor);
 		tools.Reweight(SerialTrueDeltaPtx_InDeltaPtyPlot[inte],ScalingFactor);
 		tools.Reweight(SerialTrueECal_InDeltaPTPlot[inte],ScalingFactor);
+		tools.Reweight(SerialTrueECal_InDeltaPtxPlot[inte],ScalingFactor);
+		tools.Reweight(SerialTrueECal_InDeltaPtyPlot[inte],ScalingFactor);				
 		tools.Reweight(SerialTrueECal_InDeltaAlphaTPlot[inte],ScalingFactor);	
 			
 		tools.Reweight(SerialTrueECal_InDeltaPTDeltaAlphaTPlot[inte],ScalingFactor);
+		tools.Reweight(SerialTrueECal_InDeltaPtxDeltaPtyPlot[inte],ScalingFactor);		
 		tools.Reweight(SerialTrueECal_InMuonCosThetaMuonMomentumPlot[inte],ScalingFactor);
 		tools.Reweight(SerialTrueECal_InProtonCosThetaProtonMomentumPlot[inte],ScalingFactor);
 
@@ -1109,7 +1228,7 @@ void GenieAnalysis::Loop() {
 	//----------------------------------------//
 
 	std::cout << std::endl;
-	std::cout << "File " << FileNameAndPath +" has been created created " << std::endl; 
+	std::cout << "File " << FileNameAndPath +" has been created" << std::endl; 
 	std::cout << std::endl;	
 
 	fFile->Close();
