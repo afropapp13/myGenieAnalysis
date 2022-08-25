@@ -10,7 +10,9 @@
 	WhichSample.push_back("argon40_CCinclMEC_BNBFlux_R-3_0_6_NoRPA"); WhichName.push_back("Genie_v3_0_6_NoRPA");
 	WhichSample.push_back("argon40_CCinclMEC_BNBFlux_R-3_0_6_NoCoulomb"); WhichName.push_back("Genie_v3_0_6_NoCoulomb");
 	WhichSample.push_back("argon40_CCinclMEC_BNBFlux_R-3_0_6_RFG"); WhichName.push_back("Genie_v3_0_6_RFG");
-	WhichSample.push_back("argon40_CCinclMEC_BNBFlux_R-3_0_6_EffSF"); WhichName.push_back("Genie_v3_0_6_EffSF");	
+	WhichSample.push_back("gntp.0.gst_RFG_NoRPA"); WhichName.push_back("Genie_v3_0_6_RFG_NoRPA");	
+	WhichSample.push_back("argon40_CCinclMEC_BNBFlux_R-3_0_6_EffSF"); WhichName.push_back("Genie_v3_0_6_EffSF");
+	WhichSample.push_back("gntp.0.gst_EffSF_NoRPA"); WhichName.push_back("Genie_v3_0_6_EffSF_NoRPA");		
 	WhichSample.push_back("argon40_CCinclMEC_BNBFlux"); WhichName.push_back("Genie_v3_0_6_uB_Tune_1");
 	WhichSample.push_back("argon40_CCinclMEC_BNBFlux"); WhichName.push_back("Genie_v3_0_6_Out_Of_The_Box");
 	WhichSample.push_back("SuSav2_argon40_CCinclMEC_BNBFlux"); WhichName.push_back("SuSav2");
