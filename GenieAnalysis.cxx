@@ -79,8 +79,13 @@ void GenieAnalysis::Loop() {
 	TH1D* TrueDeltaAlpha3DqPlot[NInte];
 	TH1D* TrueDeltaAlpha3DMuPlot[NInte];		
 	TH1D* TrueDeltaPhiTPlot[NInte];
+	TH1D* TrueDeltaPhi3DPlot[NInte];	
 	TH1D* TrueDeltaPLPlot[NInte];
 	TH1D* TrueDeltaPnPlot[NInte];
+	TH1D* TrueDeltaPnPerpPlot[NInte];
+	TH1D* TrueDeltaPnPerpxPlot[NInte];
+	TH1D* TrueDeltaPnPerpyPlot[NInte];		
+	TH1D* TrueDeltaPnParPlot[NInte];		
 	TH1D* TrueDeltaPtxPlot[NInte];
 	TH1D* TrueDeltaPtyPlot[NInte];
 	TH1D* TrueAPlot[NInte];
@@ -203,8 +208,13 @@ void GenieAnalysis::Loop() {
 		TrueDeltaAlpha3DqPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaAlpha3DqPlot",LabelXAxisDeltaAlpha3Dq,NBinsDeltaAlpha3Dq,ArrayNBinsDeltaAlpha3Dq);
 		TrueDeltaAlpha3DMuPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaAlpha3DMuPlot",LabelXAxisDeltaAlpha3DMu,NBinsDeltaAlpha3DMu,ArrayNBinsDeltaAlpha3DMu);				
 		TrueDeltaPhiTPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPhiTPlot",LabelXAxisDeltaPhiT,NBinsDeltaPhiT,ArrayNBinsDeltaPhiT);
+		TrueDeltaPhi3DPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPhi3DPlot",LabelXAxisDeltaPhi3D,NBinsDeltaPhi3D,ArrayNBinsDeltaPhi3D);		
 		TrueDeltaPLPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPLPlot",LabelXAxisDeltaPL,NBinsDeltaPL,ArrayNBinsDeltaPL);
 		TrueDeltaPnPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPnPlot",LabelXAxisDeltaPn,NBinsDeltaPn,ArrayNBinsDeltaPn);
+		TrueDeltaPnPerpPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPnPerpPlot",LabelXAxisDeltaPnPerp,NBinsDeltaPnPerp,ArrayNBinsDeltaPnPerp);
+		TrueDeltaPnPerpxPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPnPerpxPlot",LabelXAxisDeltaPnPerpx,NBinsDeltaPnPerpx,ArrayNBinsDeltaPnPerpx);
+		TrueDeltaPnPerpyPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPnPerpyPlot",LabelXAxisDeltaPnPerpy,NBinsDeltaPnPerpy,ArrayNBinsDeltaPnPerpy);				
+		TrueDeltaPnParPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPnParPlot",LabelXAxisDeltaPnPar,NBinsDeltaPnPar,ArrayNBinsDeltaPnPar);				
 		TrueDeltaPtxPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPtxPlot",LabelXAxisDeltaPtx,NBinsDeltaPtx,ArrayNBinsDeltaPtx);
 		TrueDeltaPtyPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueDeltaPtyPlot",LabelXAxisDeltaPty,NBinsDeltaPty,ArrayNBinsDeltaPty);
 		TrueAPlot[inte] = new TH1D(InteractionLabels[inte]+"TrueAPlot",LabelXAxisA,NBinsA,ArrayNBinsA);
@@ -712,6 +722,7 @@ void GenieAnalysis::Loop() {
 		double TrueDeltaAlpha3Dq = stv_tool.ReturnDeltaAlpha3Dq();
 		double TrueDeltaAlpha3DMu = stv_tool.ReturnDeltaAlpha3DMu();				
 		double TrueDeltaPhiT = stv_tool.ReturnDeltaPhiT();
+		double TrueDeltaPhi3D = stv_tool.ReturnDeltaPhi3D();		
 		double ECal = stv_tool.ReturnECal();
 		double EQE = stv_tool.ReturnEQE();
 		double TrueQ2 = stv_tool.ReturnQ2();	
@@ -722,6 +733,10 @@ void GenieAnalysis::Loop() {
 
 		double TruePL = stv_tool.ReturnPL();
 		double TruePn = stv_tool.ReturnPn();
+		double TruePnPerp = stv_tool.ReturnPnPerp();
+		double TruePnPerpx = stv_tool.ReturnPnPerpx();
+		double TruePnPerpy = stv_tool.ReturnPnPerpy();				
+		double TruePnPar = stv_tool.ReturnPnPar();				
 		double TruePtx = stv_tool.ReturnPtx();
 		double TruePty = stv_tool.ReturnPty();
 		double TrueA = stv_tool.ReturnA();
@@ -737,6 +752,10 @@ void GenieAnalysis::Loop() {
 		// DeltaPty
 		// DeltaPL
 		// DeltaPn
+		// DeltaPnPerp
+		// DeltaPnPerpx
+		// DeltaPnPerpy				
+		// DeltaPnPar				
 		// Q2
 		// ECal
 		// EQE
@@ -751,6 +770,10 @@ void GenieAnalysis::Loop() {
 		if (TruePty > ArrayNBinsDeltaPty[NBinsDeltaPty]) { TruePty = 0.5 * (ArrayNBinsDeltaPty[NBinsDeltaPty] + ArrayNBinsDeltaPty[NBinsDeltaPty-1]); }
 		if (TruePL > ArrayNBinsDeltaPL[NBinsDeltaPL]) { TruePL = 0.5 * (ArrayNBinsDeltaPL[NBinsDeltaPL] + ArrayNBinsDeltaPL[NBinsDeltaPL-1]); }						
 		if (TruePn > ArrayNBinsDeltaPn[NBinsDeltaPn]) { TruePn = 0.5 * (ArrayNBinsDeltaPn[NBinsDeltaPn] + ArrayNBinsDeltaPn[NBinsDeltaPn-1]); }
+		if (TruePnPerp > ArrayNBinsDeltaPnPerp[NBinsDeltaPnPerp]) { TruePnPerp = 0.5 * (ArrayNBinsDeltaPnPerp[NBinsDeltaPnPerp] + ArrayNBinsDeltaPnPerp[NBinsDeltaPnPerp-1]); }
+		if (TruePnPerpx > ArrayNBinsDeltaPnPerpx[NBinsDeltaPnPerpx]) { TruePnPerpx = 0.5 * (ArrayNBinsDeltaPnPerpx[NBinsDeltaPnPerpx] + ArrayNBinsDeltaPnPerpx[NBinsDeltaPnPerpx-1]); }
+		if (TruePnPerpy > ArrayNBinsDeltaPnPerpy[NBinsDeltaPnPerpy]) { TruePnPerpy = 0.5 * (ArrayNBinsDeltaPnPerpy[NBinsDeltaPnPerpy] + ArrayNBinsDeltaPnPerpy[NBinsDeltaPnPerpy-1]); }				
+		if (TruePnPar > ArrayNBinsDeltaPnPar[NBinsDeltaPnPar]) { TruePnPar = 0.5 * (ArrayNBinsDeltaPnPar[NBinsDeltaPnPar] + ArrayNBinsDeltaPnPar[NBinsDeltaPnPar-1]); }				
 
 		if (ECal > ArrayNBinsECal[NBinsECal]) { ECal = 0.5 * (ArrayNBinsECal[NBinsECal] + ArrayNBinsECal[NBinsECal-1]); }
 		if (EQE > ArrayNBinsEQE[NBinsEQE]) { EQE = 0.5 * (ArrayNBinsEQE[NBinsEQE] + ArrayNBinsEQE[NBinsEQE-1]); }
@@ -771,6 +794,10 @@ void GenieAnalysis::Loop() {
 		// DeltaPtx
 		// DeltaPty
 		// DeltaPL
+		// DeltaPnPerp
+		// DeltaPnPerpx
+		// DeltaPnPerpy				
+		// DeltaPnPar			
 		// alpha
 		// PMissMinus
 			
@@ -778,7 +805,11 @@ void GenieAnalysis::Loop() {
 		if (EQE < ArrayNBinsEQE[0]) { EQE = 0.5 * (ArrayNBinsEQE[0] + ArrayNBinsEQE[1]); }			
 		if (TruePtx < ArrayNBinsDeltaPtx[0]) { TruePtx = 0.5 * (ArrayNBinsDeltaPtx[0] + ArrayNBinsDeltaPtx[1]); }
 		if (TruePty < ArrayNBinsDeltaPty[0]) { TruePty = 0.5 * (ArrayNBinsDeltaPty[0] + ArrayNBinsDeltaPty[1]); }
-		if (TruePL < ArrayNBinsDeltaPL[0]) { TruePL = 0.5 * (ArrayNBinsDeltaPL[0] + ArrayNBinsDeltaPL[1]); }						
+		if (TruePL < ArrayNBinsDeltaPL[0]) { TruePL = 0.5 * (ArrayNBinsDeltaPL[0] + ArrayNBinsDeltaPL[1]); }
+		if (TruePnPerp < ArrayNBinsDeltaPnPerp[0]) { TruePnPerp = 0.5 * (ArrayNBinsDeltaPnPerp[0] + ArrayNBinsDeltaPnPerp[1]); }
+		if (TruePnPerpx < ArrayNBinsDeltaPnPerpx[0]) { TruePnPerpx = 0.5 * (ArrayNBinsDeltaPnPerpx[0] + ArrayNBinsDeltaPnPerpx[1]); }
+		if (TruePnPerpy < ArrayNBinsDeltaPnPerpy[0]) { TruePnPerpy = 0.5 * (ArrayNBinsDeltaPnPerpy[0] + ArrayNBinsDeltaPnPerpy[1]); }				
+		if (TruePnPar < ArrayNBinsDeltaPnPar[0]) { TruePnPar = 0.5 * (ArrayNBinsDeltaPnPar[0] + ArrayNBinsDeltaPnPar[1]); }										
 		if (TrueA < ArrayNBinsA[0]) { TrueA = 0.5 * (ArrayNBinsA[0] + ArrayNBinsA[1]); }
 		if (TruePMissMinus < ArrayNBinsPMissMinus[0]) { TruePMissMinus = 0.5 * (ArrayNBinsPMissMinus[0] + ArrayNBinsPMissMinus[1]); }		
 
@@ -905,6 +936,7 @@ void GenieAnalysis::Loop() {
 				TrueDeltaAlpha3DqPlot[0]->Fill(TrueDeltaAlpha3Dq,weight);
 				TrueDeltaAlpha3DMuPlot[0]->Fill(TrueDeltaAlpha3DMu,weight);								
 				TrueDeltaPhiTPlot[0]->Fill(TrueDeltaPhiT,weight);
+				TrueDeltaPhi3DPlot[0]->Fill(TrueDeltaPhi3D,weight);				
 				TrueECalPlot[0]->Fill(ECal,weight);
 				TrueEQEPlot[0]->Fill(EQE,weight);
 				TrueQ2Plot[0]->Fill(TrueQ2,weight);				
@@ -920,6 +952,10 @@ void GenieAnalysis::Loop() {
 				TruePMissPlot[0]->Fill(TrueMissMomentum,weight);
 				TrueDeltaPLPlot[0]->Fill(TruePL,weight);
 				TrueDeltaPnPlot[0]->Fill(TruePn,weight);
+				TrueDeltaPnPerpPlot[0]->Fill(TruePnPerp,weight);
+				TrueDeltaPnPerpxPlot[0]->Fill(TruePnPerpx,weight);
+				TrueDeltaPnPerpyPlot[0]->Fill(TruePnPerpy,weight);								
+				TrueDeltaPnParPlot[0]->Fill(TruePnPar,weight);								
 				TrueDeltaPtxPlot[0]->Fill(TruePtx,weight);
 				TrueDeltaPtyPlot[0]->Fill(TruePty,weight);
 				TrueAPlot[0]->Fill(TrueA,weight);
@@ -933,6 +969,7 @@ void GenieAnalysis::Loop() {
 				TrueDeltaAlpha3DqPlot[genie_mode]->Fill(TrueDeltaAlpha3Dq,weight);
 				TrueDeltaAlpha3DMuPlot[genie_mode]->Fill(TrueDeltaAlpha3DMu,weight);								
 				TrueDeltaPhiTPlot[genie_mode]->Fill(TrueDeltaPhiT,weight);
+				TrueDeltaPhi3DPlot[genie_mode]->Fill(TrueDeltaPhi3D,weight);				
 				TrueECalPlot[genie_mode]->Fill(ECal,weight);
 				TrueEQEPlot[genie_mode]->Fill(EQE,weight);
 				TrueQ2Plot[genie_mode]->Fill(TrueQ2,weight);				
@@ -948,6 +985,10 @@ void GenieAnalysis::Loop() {
 				TruePMissPlot[genie_mode]->Fill(TrueMissMomentum,weight);
 				TrueDeltaPLPlot[genie_mode]->Fill(TruePL,weight);
 				TrueDeltaPnPlot[genie_mode]->Fill(TruePn,weight);
+				TrueDeltaPnPerpPlot[genie_mode]->Fill(TruePnPerp,weight);
+				TrueDeltaPnPerpxPlot[genie_mode]->Fill(TruePnPerpx,weight);
+				TrueDeltaPnPerpyPlot[genie_mode]->Fill(TruePnPerpy,weight);								
+				TrueDeltaPnParPlot[genie_mode]->Fill(TruePnPar,weight);								
 				TrueDeltaPtxPlot[genie_mode]->Fill(TruePtx,weight);
 				TrueDeltaPtyPlot[genie_mode]->Fill(TruePty,weight);
 				TrueAPlot[genie_mode]->Fill(TrueA,weight);					
@@ -1233,8 +1274,13 @@ void GenieAnalysis::Loop() {
 		tools.Reweight(TrueDeltaAlpha3DqPlot[inte],ScalingFactor);
 		tools.Reweight(TrueDeltaAlpha3DMuPlot[inte],ScalingFactor);				
 		tools.Reweight(TrueDeltaPhiTPlot[inte],ScalingFactor);
+		tools.Reweight(TrueDeltaPhi3DPlot[inte],ScalingFactor);		
 		tools.Reweight(TrueDeltaPLPlot[inte],ScalingFactor);
 		tools.Reweight(TrueDeltaPnPlot[inte],ScalingFactor);
+		tools.Reweight(TrueDeltaPnPerpPlot[inte],ScalingFactor);
+		tools.Reweight(TrueDeltaPnPerpxPlot[inte],ScalingFactor);	
+		tools.Reweight(TrueDeltaPnPerpyPlot[inte],ScalingFactor);			
+		tools.Reweight(TrueDeltaPnParPlot[inte],ScalingFactor);				
 		tools.Reweight(TrueDeltaPtxPlot[inte],ScalingFactor);
 		tools.Reweight(TrueDeltaPtyPlot[inte],ScalingFactor);
 		tools.Reweight(TrueAPlot[inte],ScalingFactor);

@@ -30,7 +30,7 @@
 	gROOT->ProcessLine(".L ../myClasses/STV_Tools.cxx+");
 	gROOT->ProcessLine(".L ../myClasses/Tools.cxx+");	
 
-	gROOT->ProcessLine(".L GenieAnalysis.cxx+");
+	gROOT->ProcessLine(".L GenieAnalysis.cxx++");
 
 	for (int i =0;i < (int)(WhichSample.size()); i++) {
 
