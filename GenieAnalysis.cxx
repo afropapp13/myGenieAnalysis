@@ -470,7 +470,8 @@ void GenieAnalysis::Loop() {
 		fOutFileName == "Genie_v3_0_6_hN2018" ||  
 		fOutFileName == "Genie_v3_0_6_EffSF" ||
 		fOutFileName == "Genie_v3_0_6_EffSF_NoRPA" ||
-		fOutFileName == "Genie_v3_0_6_RFG" ||		
+		fOutFileName == "Genie_v3_0_6_RFG" ||
+		fOutFileName == "v3_2_0_G18_10d_02_11a" ||				
 		fOutFileName == "Genie_v3_0_6_RFG_NoRPA"				
 
 	) {
@@ -482,7 +483,8 @@ void GenieAnalysis::Loop() {
 		if (fOutFileName == "Genie_v3_0_6_RFG") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_RFG.root"); }
 		if (fOutFileName == "Genie_v3_0_6_RFG_NoRPA") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_RFG_NoRPA.root"); }		
 		if (fOutFileName == "Genie_v3_0_6_EffSF") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_EffSF.root"); }
-		if (fOutFileName == "Genie_v3_0_6_EffSF_NoRPA") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_EffSF_NoRPA.root"); }		
+		if (fOutFileName == "Genie_v3_0_6_EffSF_NoRPA") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_EffSF_NoRPA.root"); }
+		if (fOutFileName == "v3_2_0_G18_10d_02_11a") { fweights = TFile::Open("mySamples/myWeights_uB_Tune_v3_2_0_G18_10d_02_11a.root"); }				
 
 		tweights = (TTree*)fweights->Get("GenericVectors__VARS");
 		tweights->SetBranchAddress("Weight", &cv_weight);
@@ -1236,6 +1238,11 @@ void GenieAnalysis::Loop() {
 	if (fOutFileName == "Genie_v3_0_6_RFG_NoRPA") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_RFG_NoRPA_FluxIntegratedXSection ; }	
 	if (fOutFileName == "Genie_v3_0_6_EffSF") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_EffSF_FluxIntegratedXSection ; }
 	if (fOutFileName == "Genie_v3_0_6_EffSF_NoRPA") { ScalingFactor = ScalingFactor * R_3_0_6_G18_10a_02_11a_EffSF_NoRPA_FluxIntegratedXSection ; }	
+	if (fOutFileName == "v3_2_0_G21_11b_00_000") { ScalingFactor = ScalingFactor * v3_2_0_G21_11b_00_000_FluxIntegratedXSection ; }
+	if (fOutFileName == "v3_4_0_G18_02a_02_11a") { ScalingFactor = ScalingFactor * v3_4_0_G18_02a_02_11a_FluxIntegratedXSection ; }
+	if (fOutFileName == "v3_4_0_G21_11b_00_000") { ScalingFactor = ScalingFactor * v3_4_0_G21_11b_00_000_FluxIntegratedXSection ; }	
+	if (fOutFileName == "v3_2_0_G18_10d_02_11a") { ScalingFactor = ScalingFactor * v3_2_0_G18_10d_02_11a_FluxIntegratedXSection ; }
+	if (fOutFileName == "v3_2_0_G21_11b_00_000_1GeV") { ScalingFactor = ScalingFactor * v3_2_0_G21_11b_00_000_FluxIntegratedXSection ; }						
 
 	file->cd();
 
